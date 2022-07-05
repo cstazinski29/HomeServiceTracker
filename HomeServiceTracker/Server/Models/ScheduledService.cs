@@ -9,9 +9,9 @@ namespace HomeServiceTracker.Server.Models
         [Required]
         public int ServiceItemId { get; set; }
         public int HomeId { get; set; }
-        public DateTime LastServiceDate { get; set; }
-        public DateTime NextServiceDate { get; set; }
-        public DateTime ScheduledServiceDate { get; set; }
+        public DateTime? LastServiceDate { get; set; }
+        public DateTime? NextServiceDate { get; set; }
+        public DateTime? ScheduledServiceDate { get; set; }
         public bool ServiceCompleted { get; set; }
         public int ServiceProviderId { get; set; }
         public float ServiceCost { get; set; }
