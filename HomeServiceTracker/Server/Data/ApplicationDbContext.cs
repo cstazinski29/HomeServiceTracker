@@ -13,5 +13,10 @@ namespace HomeServiceTracker.Server.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        public DbSet<HomeInfo> HomeInfo { get; set; }
+        public DbSet<ServiceItem> ServiceItems { get; set; }
+        public DbSet<ScheduledService> ScheduledServices { get; set; }
+        public DbSet<ServiceProviderInfo> ServiceProviders { get; set; }
     }
 }
