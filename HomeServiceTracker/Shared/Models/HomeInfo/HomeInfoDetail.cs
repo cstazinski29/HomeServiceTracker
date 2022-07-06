@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeServiceTracker.Shared.Models.Home
+namespace HomeServiceTracker.Shared.Models.HomeInfo
 {
     public class HomeInfoDetail
     {
