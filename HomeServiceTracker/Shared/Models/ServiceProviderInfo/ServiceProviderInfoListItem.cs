@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeServiceTracker.Shared.Models.ServiceProvider
+namespace HomeServiceTracker.Shared.Models.ServiceProviderInfo
 {
-    public class ServiceProviderListItem
+    public class ServiceProviderInfoListItem
     {
         public int Id { get; set; }
         public string ServiceProviderName { get; set; }
