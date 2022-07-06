@@ -1,10 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace HomeServiceTracker.Server.Models
+namespace HomeServiceTracker.Shared.Models.HomeInfo
 {
-    public class HomeInfo
+    public class HomeInfoEdit
     {
-        [Key]
+        [Required]
         public int Id { get; set; }
         [Required]
         public string HomeName { get; set; }
@@ -12,7 +17,5 @@ namespace HomeServiceTracker.Server.Models
         public int SquareFootage { get; set; }
         public int Beds { get; set; }
         public float Baths { get; set; }
-        public int PrimaryHomeownerId { get; set; }
-        //public ICollection<ScheduledService>
     }
 }
