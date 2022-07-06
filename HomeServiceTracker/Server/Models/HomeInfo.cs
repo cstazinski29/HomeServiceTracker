@@ -2,7 +2,7 @@
 
 namespace HomeServiceTracker.Server.Models
 {
-    public class HomeInformation
+    public class HomeInfo
     {
         [Key]
         public int Id { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace HomeServiceTracker.Server.Models
 {
-    public class ServiceProvider
+    public class ServiceProviderInfo
     {
         public int Id { get; set; }
         public string ServiceProviderId { get; set; }
