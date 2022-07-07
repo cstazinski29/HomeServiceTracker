@@ -15,6 +15,9 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
         public void SetUserId(string userId) => _userId = userId;
         public async Task<bool> CreateHomeInfoAsync(HomeInfoCreate model)
         {
+            if (model == null)
+                return false;
+
             var homeInfoEntity = new HomeServiceTracker.Server.Models.HomeInfo
             {
                 HomeName = model.HomeName,
@@ -38,8 +41,7 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
                     Id = h.Id,
                     HomeName = h.HomeName
                 });
-            return homeInfoQuery.ToList();
-            // module has the above return as an "await" and "ToListAsync"
+            return await homeInfoQuery.ToListAsync();
         }
 
         public async Task<HomeInfoDetail> GetHomeInfoByIdAsync(int homeId)
@@ -61,17 +63,17 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
             return detail;
         }
 
+        public Task<bool> UpdateHomeInfoAsync(HomeInfoEdit model)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> DeleteHomeInfoAsync(int homeId)
         {
             throw new NotImplementedException();
         }
 
         public Task<bool> DeleteHomeInfoAsync(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateHomeInfoAsync(HomeInfoEdit model)
         {
             throw new NotImplementedException();
         }

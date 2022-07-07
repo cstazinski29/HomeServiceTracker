@@ -27,8 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Services\ServiceProviderInfo\" />
-    <Folder Include="Services\ScheduledService\" />
-    <Folder Include="Services\ServiceItem\" />
   </ItemGroup>
 
 </Project>
