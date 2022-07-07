@@ -1,8 +1,12 @@
 using HomeServiceTracker.Server.Data;
 using HomeServiceTracker.Server.Models;
+using HomeServiceTracker.Server.Services.HomeInfo;
+using HomeServiceTracker.Server.Services.ServiceItem;
+using HomeServiceTracker.Server.Services.ScheduledService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using HomeServiceTracker.Server.Services.ServiceProviderInfo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +24,12 @@ builder.Services.AddIdentityServer()
 
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
+
+// dependency injection
+builder.Services.AddScoped<IHomeInfoService, HomeInfoService>();
+builder.Services.AddScoped<IServiceItemService, ServiceItemService>();
+builder.Services.AddScoped<IScheduledServiceService, ScheduledServiceService>();
+builder.Services.AddScoped<IServiceProviderInfoService, ServiceProviderInfoService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
