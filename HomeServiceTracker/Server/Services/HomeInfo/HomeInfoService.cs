@@ -71,12 +71,6 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
             throw new NotImplementedException();
         }
 
-
-        public void SetUserId(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<bool> UpdateHomeInfoAsync(HomeInfoEdit model)
         {
             throw new NotImplementedException();
