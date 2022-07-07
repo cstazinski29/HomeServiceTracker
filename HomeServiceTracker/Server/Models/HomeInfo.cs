@@ -12,7 +12,7 @@ namespace HomeServiceTracker.Server.Models
         public int SquareFootage { get; set; }
         public int Beds { get; set; }
         public float Baths { get; set; }
-        public int PrimaryHomeownerId { get; set; }
+        public string PrimaryHomeownerId { get; set; }
         //public ICollection<ScheduledService>
     }
 }
