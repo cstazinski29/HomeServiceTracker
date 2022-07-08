@@ -41,6 +41,5 @@ namespace HomeServiceTracker.Server.Controllers
                 return Ok();
             else return UnprocessableEntity();
         }
-        }
     }
 }
