@@ -1,0 +1,45 @@
+﻿@using HomeServiceTracker.Shared.Models.HomeInfo
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient http
+@*commented out the authorization below for testing purposes, as I have not worked out the authorization yet*@
+@*@attribute [Authorize]*@
+
+@page "/HomeInfo/Index"
+
+<h3>Home Info</h3>
+<a href="/homeInfo/create">Create a Home</a>
+
+@if (homeInfo == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (HomeInfoListItem home in homeInfo)
+            {
+                <tr>
+                    <td>@home.Id</td>
+                    <td>@home.HomeName</td>
+                </tr>
+            }
+        </tbody>
+    </table>   
+}
+
+
+@code {
+    private List<HomeInfoListItem> homeInfo;
+//Not sure what this does here below...
+    protected override async Task OnInitializedAsync()
+    {
+        homeInfo = await http.GetFromJsonAsync<List<HomeInfoListItem>>("HomeInfo");
+    }
+}

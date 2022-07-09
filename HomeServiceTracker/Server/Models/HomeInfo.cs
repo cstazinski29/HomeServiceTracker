@@ -12,7 +12,8 @@ namespace HomeServiceTracker.Server.Models
         public int SquareFootage { get; set; }
         public int Beds { get; set; }
         public float Baths { get; set; }
-        public string PrimaryHomeownerId { get; set; }
+        //I think this may want to go back to a string; I set is as a guid to make it equal to the _userId in the HomeInfoService
+        public Guid PrimaryHomeownerId { get; set; }
         //public ICollection<ScheduledService>
     }
 }

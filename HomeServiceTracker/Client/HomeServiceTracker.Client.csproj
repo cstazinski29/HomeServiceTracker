@@ -17,4 +17,10 @@
     <ProjectReference Include="..\Shared\HomeServiceTracker.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\ServiceProvider\" />
+    <Folder Include="Pages\ScheduledService\" />
+    <Folder Include="Pages\ServiceItem\" />
+  </ItemGroup>
+
 </Project>
