@@ -1,0 +1,76 @@
+﻿@using HomeServiceTracker.Shared.Models.ScheduledService
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient http
+@inject NavigationManager navigation
+@attribute [Authorize]
+
+@page "/ScheduledService/Create"
+
+<h3>Create</h3>
+
+@if (errorMessage != null)
+{
+    <h5 class="text-danger">@errorMessage</h5>
+}
+
+<div class="container">
+    <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+        <div class="form-group">
+            <label>Service Item Id</label>
+            <InputNumber class="form-control" @bind-Value="model.ServiceItemId" />
+        </div>
+        <div class="form-group">
+            <label>Home Id</label>
+            <InputNumber class="form-control" @bind-Value="model.HomeId" />
+        </div>
+        <div class="form-group">
+            <label>Last Service Date</label>
+            <InputDate class="form-control" @bind-Value="model.LastServiceDate" />
+        </div>
+        <div class="form-group">
+            <label>Next Service Date</label>
+            <InputDate class="form-control" @bind-Value="model.NextServiceDate" />
+        </div>
+        <div class="form-group">
+            <label>Scheduled Service Date</label>
+            <InputDate class="form-control" @bind-Value="model.ScheduledServiceDate" />
+        </div>
+        <div class="form-group">
+            <label>Service Completed</label>
+            <InputCheckbox class="form-control" @bind-Value="model.ServiceCompleted" />
+        </div>
+        <div class="form-group">
+            <label>Service Provider Id</label>
+            <InputNumber class="form-control" @bind-Value="model.ServiceProviderId" />
+        </div>
+        <div class="form-group">
+            <label>Service Cost</label>
+            <InputNumber class="form-control" @bind-Value="model.ServiceCost" />
+        </div>
+        <div class="form-group">
+            <label>Service Rating</label>
+            <InputNumber class="form-control" @bind-Value="model.ServiceRating" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+    </EditForm>
+</div>
+
+@code {
+    private ScheduledServiceCreate model = new();
+    private string errorMessage;
+
+    private async void HandleSubmit()
+    {
+        var createRes = await http.PostAsJsonAsync<ScheduledServiceCreate>("/api/scheduledService", model);
+        if (createRes.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/scheduledService/Index");
+        }
+        else
+        {
+            errorMessage = "Could not create your service right now. Please try again later.";
+        }
+    }
+}

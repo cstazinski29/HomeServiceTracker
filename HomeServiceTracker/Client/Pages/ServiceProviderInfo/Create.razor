@@ -1,0 +1,44 @@
+﻿@using HomeServiceTracker.Shared.Models.ServiceProviderInfo
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient http
+@inject NavigationManager navigation
+@attribute [Authorize]
+
+@page "/ServiceProviderInfo/Create"
+
+<h3>Create</h3>
+
+@if (errorMessage != null)
+{
+    <h5 class="text-danger">@errorMessage</h5>
+}
+
+<div class="container">
+    <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+        <div class="form-group">
+            <label>Service Provider Name</label>
+            <InputText class="form-control" @bind-Value="model.ServiceProviderName" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+    </EditForm>
+</div>
+
+@code {
+    private ServiceProviderInfoCreate model = new();
+    private string errorMessage;
+
+    private async void HandleSubmit()
+    {
+        var createRes = await http.PostAsJsonAsync<ServiceProviderInfoCreate>("/api/serviceProviderInfo", model);
+        if (createRes.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/serviceProviderInfo/Index");
+        }
+        else
+        {
+            errorMessage = "Could not create your service provider right now. Please try again later.";
+        }
+    }
+}

@@ -51,7 +51,7 @@
         var createRes = await http.PostAsJsonAsync<HomeInfoCreate>("/api/homeInfo", model);
         if (createRes.IsSuccessStatusCode)
         {
-            navigation.NavigateTo("/homeInfo");
+            navigation.NavigateTo("/homeInfo/Index");
         }
         else
         {

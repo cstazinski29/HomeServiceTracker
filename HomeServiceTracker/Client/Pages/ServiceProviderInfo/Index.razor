@@ -1,0 +1,44 @@
+﻿@using HomeServiceTracker.Shared.Models.ServiceProviderInfo
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient http
+@attribute [Authorize]
+
+@page "/ServiceProviderInfo/Index"
+
+<h3>Service Providers</h3>
+<a href="/serviceProviderInfo/create">Create a Service Provider</a>
+
+@if (serviceProviderInfo == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Service Provider Name</th>
+                <th>Average Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ServiceProviderInfoListItem service in serviceProviderInfo)
+            {
+                <tr>
+                    <td>@service.Id</td>
+                    <td>@service.ServiceProviderName</td>
+                    <td>@service.AverageServiceProviderRating</td>
+                </tr>
+            }
+        </tbody>
+    </table>   
+}
+
+@code {
+    private List<ServiceProviderInfoListItem> serviceProviderInfo;
+    protected override async Task OnInitializedAsync()
+    {
+        serviceProviderInfo = await http.GetFromJsonAsync<List<ServiceProviderInfoListItem>>("/api/serviceProviderInfo");
+    }
+}
