@@ -1,6 +1,6 @@
 ﻿@using HomeServiceTracker.Shared.Models.HomeInfo
 @using Microsoft.AspNetCore.Authorization
-@inject HttpClient Http
+@inject HttpClient http
 @*commented out the authorization below for testing purposes, as I have not worked out the authorization yet*@
 @*@attribute [Authorize]*@
 
@@ -40,6 +40,6 @@ else
 //Not sure what this does here below...
     protected override async Task OnInitializedAsync()
     {
-        homeInfo = await Http.GetFromJsonAsync<List<HomeInfoListItem>>("HomeInfo");
+        homeInfo = await http.GetFromJsonAsync<List<HomeInfoListItem>>("HomeInfo");
     }
 }
