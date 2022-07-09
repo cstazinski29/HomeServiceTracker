@@ -20,6 +20,7 @@ else
                 <th>Id</th>
                 <th>Service Name</th>
                 <th>Service Frequency</th>
+                <th>Options</th>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +29,11 @@ else
                 <tr>
                     <td>@service.Id</td>
                     <td>@service.ServiceName</td>
-                    <td>@service.ServiceFrequency</td>
+                    <td>
+                        <a href=@($"serviceItem/{service.Id}")>Details</a>
+                        <a href=@($"serviceItem/edit/{service.Id}")>Edit</a>
+                        <a href=@($"serviceItem/delete/{service.Id}")>Delete</a>
+                    </td>
                 </tr>
             }
         </tbody>
