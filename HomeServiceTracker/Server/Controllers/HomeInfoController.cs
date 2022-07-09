@@ -17,12 +17,12 @@ namespace HomeServiceTracker.Server.Controllers
             _homeInfoService = homeInfoService;
         }
 
-        private string GetUserId()
+        private Guid GetUserId()
         {
-            string userIdClaim = User.Claims.First(i => i.Type == ClaimTypes.NameIdentifier).Value;
+            var userIdClaim = User.Claims.First(i => i.Type == ClaimTypes.NameIdentifier).Value;
             if (userIdClaim == null)
-                return null;
-            return userIdClaim;
+                return default;
+            return Guid.Parse(userIdClaim);
         }
 
         private bool SetUserIdInService()
