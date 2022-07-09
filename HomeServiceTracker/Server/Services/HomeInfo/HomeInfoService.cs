@@ -26,7 +26,8 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
                 BuildYear = model.BuildYear,
                 SquareFootage = model.SquareFootage,
                 Beds = model.Beds,
-                Baths = model.Baths
+                Baths = model.Baths,
+                PrimaryHomeownerId = _userId
                 // need to set primaryHomeownerId to be current userId
                 // may need to add CreatedUtc field here if want to track when home added
             };
