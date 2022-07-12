@@ -49,7 +49,6 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
 
         public async Task<HomeInfoDetail> GetHomeInfoByIdAsync(int homeId)
         {
-            //removing the primary homeowner requirement for testing purposes
             var homeEntity = await _context.HomeInfo.FirstOrDefaultAsync(h => h.Id == homeId && h.PrimaryHomeownerId == _userId);
 
             if (homeEntity is null)

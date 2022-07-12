@@ -23,15 +23,14 @@ namespace HomeServiceTracker.Server.Controllers
             return Ok(serviceItems);
         }
 
-        // NEED TO UPDATE SERVICE ITEM SERVICE WITH THE GET BY ID METHOD FIRST
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> ServiceItem(int id)
-        //{
-        //    var serviceItem = await _serviceItemService.GetServiceItemByIdAsync(id);
-        //    if (serviceItem == null)
-        //        return NotFound();
-        //    return Ok(serviceItem);
-        //}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ServiceItem(int id)
+        {
+            var serviceItem = await _serviceItemService.GetServiceItemByIdAsync(id);
+            if (serviceItem == null)
+                return NotFound();
+            return Ok(serviceItem);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create(ServiceItemCreate model)
