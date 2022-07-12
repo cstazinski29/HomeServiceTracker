@@ -42,16 +42,16 @@ namespace HomeServiceTracker.Server.Controllers
             return homeInfo.ToList();
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Note(int id)
+        [HttpGet("{homeId}")]
+        public async Task<IActionResult> GetHomeInfoById(int homeId)
         {
             if (!SetUserIdInService()) return Unauthorized();
 
-            var homeInfo = await _homeInfoService.GetHomeInfoByIdAsync(id);
+            var homeInfo = await _homeInfoService.GetHomeInfoByIdAsync(homeId);
             if (homeInfo == null)
                 return NotFound();
 
-            return Ok(Note);
+            return Ok(homeInfo);
         }
 
         [HttpPost]

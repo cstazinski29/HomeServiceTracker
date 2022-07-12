@@ -4,7 +4,7 @@
 @attribute [Authorize]
 @page "/homeInfo/{homeId:int}"
 
-<h3>Home Info @homeId</h3>
+<h3>Home Info @*#@homeId*@</h3>
 
 @if (HomeInfo == null)
 {
