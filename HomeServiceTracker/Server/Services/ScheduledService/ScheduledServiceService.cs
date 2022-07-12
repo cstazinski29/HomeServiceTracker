@@ -20,7 +20,7 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             var scheduledServiceEntity = new HomeServiceTracker.Server.Models.ScheduledService
             {
                 // Pretty sure I need to cut this down & make some of the fields auto-populate based on the user & other references (such as latest date)
-                ServiceItemId = model.Id,
+                ServiceItemId = model.ServiceItemId,
                 HomeId = model.HomeId,
                 LastServiceDate = model.LastServiceDate,
                 NextServiceDate = model.NextServiceDate,
