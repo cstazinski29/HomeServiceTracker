@@ -39,10 +39,22 @@ namespace HomeServiceTracker.Server.Services.ServiceItem
             return await serviceItemQuery.ToListAsync();
         }
 
-        //public Task<ServiceItemDetail> GetServiceItemByIdAsync(int serviceItemId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<ServiceItemDetail> GetServiceItemByIdAsync(int serviceItemId)
+        {
+            var serviceItemEntity = await _context.ServiceItems.FirstOrDefaultAsync(s => s.Id == serviceItemId);
+
+            if (serviceItemEntity is null)
+                return null;
+            var detail = new ServiceItemDetail
+            {
+                Id = serviceItemEntity.Id,
+                ServiceName = serviceItemEntity.ServiceName,
+                ServiceDescription = serviceItemEntity.ServiceDescription,
+                ServiceFrequency = serviceItemEntity.ServiceFrequency
+            };
+
+            return detail;
+        }
 
         public Task<bool> UpdateServiceItemAsync(ServiceItemEdit model)
         {

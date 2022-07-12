@@ -1,0 +1,55 @@
+﻿@using HomeServiceTracker.Shared.Models.HomeInfo
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient http
+@attribute [Authorize]
+@page "/homeInfo/{homeId:int}"
+
+<h3>Home Info #@homeId</h3>
+
+@if (HomeInfo == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="container">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <span>Home #@HomeInfo.Id</span>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">@HomeInfo.HomeName</h4>
+                <p class="card-text">@HomeInfo.BuildYear</p>
+                <p class="card-text">@HomeInfo.SquareFootage</p>
+                <p class="card-text">@HomeInfo.Beds</p>
+                <p class="card-text">@HomeInfo.Baths</p>
+            </div>
+            <div class="card-footer text-muted d-flex justify-content-between">
+                <span class="text-left">Created: [insert created date]</span>
+@*                @if (HomeInfo.ModifiedUtc !=null)
+                {
+                    <span class="text-right">Modified: [insert modified date]</span>
+                }*@
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <div class="text-center justify-content-between w-25">
+                <a href=@($"homeInfo/edit/{homeId}") class="btn btn-outline-primary">Edit</a>
+                <a href=@($"homeInfo/delete/{homeId}") class="btn btn-outline-danger">Delete</a>
+
+                <hr />
+                <a href="/homeInfo/index">Back to Home Index</a>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int homeId { get; set; }
+    public HomeInfoDetail HomeInfo { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        HomeInfo = await http.GetFromJsonAsync<HomeInfoDetail>($"/api/homeInfo/{homeId}");
+    }
+}

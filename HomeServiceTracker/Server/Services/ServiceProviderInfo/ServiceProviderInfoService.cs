@@ -36,9 +36,22 @@ namespace HomeServiceTracker.Server.Services.ServiceProviderInfo
             return await serviceProviderInfoQuery.ToListAsync();
         }
 
-        //public Task<ServiceProviderInfoDetail> GetServiceProviderInfoByIdAsync(int serviceProviderInfoId)
-        //{
-        //}
+        public async Task<ServiceProviderInfoDetail> GetServiceProviderInfoByIdAsync(int serviceProviderInfoId)
+        {
+            var serviceProviderInfoEntity = await _context.ServiceProviders.FirstOrDefaultAsync(s => s.Id == serviceProviderInfoId);
+
+            if (serviceProviderInfoEntity is null)
+                return null;
+            var detail = new ServiceProviderInfoDetail
+            {
+                Id = serviceProviderInfoEntity.Id,
+                ServiceProviderName = serviceProviderInfoEntity.ServiceProviderName,
+                NumberOfServices = serviceProviderInfoEntity.NumberOfServices,
+                AverageServiceProviderRating = serviceProviderInfoEntity.AverageServiceProviderRating
+            };
+
+            return detail;
+        }
 
         public Task<bool> UpdateServiceProviderInfoAsync(ServiceProviderInfoEdit model)
         {

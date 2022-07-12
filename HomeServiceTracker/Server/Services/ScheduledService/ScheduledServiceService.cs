@@ -20,7 +20,7 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             var scheduledServiceEntity = new HomeServiceTracker.Server.Models.ScheduledService
             {
                 // Pretty sure I need to cut this down & make some of the fields auto-populate based on the user & other references (such as latest date)
-                ServiceItemId = model.Id,
+                ServiceItemId = model.ServiceItemId,
                 HomeId = model.HomeId,
                 LastServiceDate = model.LastServiceDate,
                 NextServiceDate = model.NextServiceDate,
@@ -50,10 +50,28 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             return await scheduledServiceQuery.ToListAsync();
         }
 
-        // pretty sure this will be needed when we click into the service details
-        //public Task<ScheduledServiceDetail> GetScheduledServiceByIdAsync(int scheduledServiceId)
-        //{
-        //}
+        public async Task<ScheduledServiceDetail> GetScheduledServiceByIdAsync(int scheduledServiceId)
+        {
+            var scheduledServiceEntity = await _context.ScheduledServices.FirstOrDefaultAsync(s => s.Id == scheduledServiceId);
+
+            if (scheduledServiceEntity is null)
+                return null;
+            var detail = new ScheduledServiceDetail
+            {
+                Id = scheduledServiceEntity.Id,
+                ServiceItemId = scheduledServiceEntity.ServiceItemId,
+                HomeId = scheduledServiceEntity.HomeId,
+                LastServiceDate = scheduledServiceEntity.LastServiceDate,
+                NextServiceDate = scheduledServiceEntity.NextServiceDate,
+                ScheduledServiceDate = scheduledServiceEntity.ScheduledServiceDate,
+                ServiceCompleted = scheduledServiceEntity.ServiceCompleted,
+                ServiceProviderId = scheduledServiceEntity.ServiceProviderId,
+                ServiceCost = scheduledServiceEntity.ServiceCost,
+                ServiceRating = scheduledServiceEntity.ServiceRating
+            };
+
+            return detail;
+        }
 
         public Task<bool> UpdateScheduledServiceAsync(ScheduledServiceEdit model)
         {

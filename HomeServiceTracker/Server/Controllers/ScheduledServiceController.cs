@@ -24,13 +24,14 @@ namespace HomeServiceTracker.Server.Controllers
         }
 
         // NEED TO UPDATE SCHEDULED SERVICE SERVICE WITH THE GET BY ID METHOD FIRST
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> ScheduledService(int id)
-        //{
-        //    var scheduledService = await _scheduledServiceService.GetScheduledServiceByIdAsync(id);
-        //    if (scheduledService == null)
-        //        return NotFound();
-        //    return Ok(scheduledService);
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ScheduledService(int id)
+        {
+            var scheduledService = await _scheduledServiceService.GetScheduledServiceByIdAsync(id);
+            if (scheduledService == null)
+                return NotFound();
+            return Ok(scheduledService);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create(ScheduledServiceCreate model)

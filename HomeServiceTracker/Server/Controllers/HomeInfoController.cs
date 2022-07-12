@@ -43,7 +43,7 @@ namespace HomeServiceTracker.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Note(int id)
+        public async Task<IActionResult> GetHomeInfoById(int id)
         {
             if (!SetUserIdInService()) return Unauthorized();
 
@@ -51,7 +51,7 @@ namespace HomeServiceTracker.Server.Controllers
             if (homeInfo == null)
                 return NotFound();
 
-            return Ok(Note);
+            return Ok(homeInfo);
         }
 
         [HttpPost]

@@ -20,6 +20,7 @@ else
                 <th>Id</th>
                 <th>Service Provider Name</th>
                 <th>Average Rating</th>
+                <th>Options</th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +30,11 @@ else
                     <td>@service.Id</td>
                     <td>@service.ServiceProviderName</td>
                     <td>@service.AverageServiceProviderRating</td>
+                    <td>
+                        <a href=@($"serviceProviderInfo/{service.Id}")>Details</a>
+                        <a href=@($"serviceProviderInfo/edit/{service.Id}")>Edit</a>
+                        <a href=@($"serviceProviderInfo/delete/{service.Id}")>Delete</a>
+                    </td>
                 </tr>
             }
         </tbody>

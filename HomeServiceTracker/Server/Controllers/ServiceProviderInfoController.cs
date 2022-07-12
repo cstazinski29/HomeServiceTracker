@@ -24,14 +24,14 @@ namespace HomeServiceTracker.Server.Controllers
         }
 
         // NEED TO UPDATE SERVICE PROVIDER INFO SERVICE WITH THE GET BY ID METHOD FIRST
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> ServiceProviderInfo(int id)
-        //{
-        //    var serviceProviderInfo = await _serviceProviderInfoService.GetServiceProviderInfoByIdAsync(id);
-        //    if (serviceProviderInfo == null)
-        //        return NotFound();
-        //    return Ok(serviceProviderInfo);
-        //}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ServiceProviderInfo(int id)
+        {
+            var serviceProviderInfo = await _serviceProviderInfoService.GetServiceProviderInfoByIdAsync(id);
+            if (serviceProviderInfo == null)
+                return NotFound();
+            return Ok(serviceProviderInfo);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create(ServiceProviderInfoCreate model)
