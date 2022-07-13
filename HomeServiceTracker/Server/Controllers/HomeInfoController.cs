@@ -63,10 +63,33 @@ namespace HomeServiceTracker.Server.Controllers
             bool wasSuccessful = await _homeInfoService.CreateHomeInfoAsync(model);
 
             if (wasSuccessful) return Ok();
-                else return UnprocessableEntity();
+            else return UnprocessableEntity();
+        }
 
-        // [HttpPut]
-        // [HttpDelete]
+        [HttpPut("edit/{id}")]
+        public async Task<IActionResult> Edit(int id, HomeInfoEdit model)
+        {
+            if (!SetUserIdInService()) return Unauthorized();
+            if (model == null || !ModelState.IsValid) return BadRequest();
+            if (model.Id != id) return BadRequest();
+            
+            bool wasSuccessful = await _homeInfoService.UpdateHomeInfoAsync(model);
+            if (wasSuccessful) return Ok();
+                return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (!SetUserIdInService()) return Unauthorized();
+            
+            var home = await _homeInfoService.GetHomeInfoByIdAsync(id);
+            if (home == null) return NotFound();
+            
+            bool wasSuccessful = await _homeInfoService.DeleteHomeInfoAsync(id);
+            if (!wasSuccessful) return BadRequest();
+            
+            return Ok();
         }
     }
 }
