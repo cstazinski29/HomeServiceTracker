@@ -42,5 +42,33 @@ namespace HomeServiceTracker.Server.Controllers
                 return Ok();
             else return UnprocessableEntity();
         }
+
+        [HttpPut("edit/{id}")]
+        public async Task<IActionResult> Edit(int id, ServiceItemEdit model)
+        {
+            // I think I'll need to explore this permissioning further
+            //if (!SetUserIdInService()) return Unauthorized();
+            if (model == null || !ModelState.IsValid) return BadRequest();
+            if (model.Id != id) return BadRequest();
+
+            bool wasSuccessful = await _serviceItemService.UpdateServiceItemAsync(model);
+            if (wasSuccessful) return Ok();
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            // I think I'll need to explore this permissioning further
+            //if (!SetUserIdInService()) return Unauthorized();
+
+            var service = await _serviceItemService.GetServiceItemByIdAsync(id);
+            if (service == null) return NotFound();
+
+            bool wasSuccessful = await _serviceItemService.DeleteServiceItemAsync(id);
+            if (!wasSuccessful) return BadRequest();
+
+            return Ok();
+        }
     }
 }
