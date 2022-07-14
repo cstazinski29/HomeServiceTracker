@@ -27,7 +27,7 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
                 SquareFootage = model.SquareFootage,
                 Beds = model.Beds,
                 Baths = model.Baths,
-                PrimaryHomeownerId = _userId
+                OwnerId = _userId
                 // need to set primaryHomeownerId to be current userId
                 // may need to add CreatedUtc field here if want to track when home added
             };
@@ -38,7 +38,7 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
         }
         public async Task<IEnumerable<HomeInfoListItem>> GetAllHomeInfoAsync()
         {
-            var homeInfoQuery = _context.HomeInfo.Where(h => h.PrimaryHomeownerId == _userId)
+            var homeInfoQuery = _context.HomeInfo.Where(h => h.OwnerId == _userId)
                 .Select(h => new HomeInfoListItem
                 {
                     Id = h.Id,
@@ -49,7 +49,7 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
 
         public async Task<HomeInfoDetail> GetHomeInfoByIdAsync(int homeId)
         {
-            var homeEntity = await _context.HomeInfo.FirstOrDefaultAsync(h => h.Id == homeId && h.PrimaryHomeownerId == _userId);
+            var homeEntity = await _context.HomeInfo.FirstOrDefaultAsync(h => h.Id == homeId && h.OwnerId == _userId);
 
             if (homeEntity is null)
                 return null;
@@ -71,7 +71,7 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
             if (model == null) return false;
             var entity = await _context.HomeInfo.FindAsync(model.Id);
 
-            if (entity?.PrimaryHomeownerId != _userId) return false;
+            if (entity?.OwnerId != _userId) return false;
 
             entity.HomeName = model.HomeName;
             entity.BuildYear = model.BuildYear;
@@ -85,7 +85,7 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
         public async Task<bool> DeleteHomeInfoAsync(int homeId)
         {
             var entity = await _context.HomeInfo.FindAsync(homeId);
-            if (entity?.PrimaryHomeownerId != _userId)
+            if (entity?.OwnerId != _userId)
                 return false;
 
             _context.HomeInfo.Remove(entity);
