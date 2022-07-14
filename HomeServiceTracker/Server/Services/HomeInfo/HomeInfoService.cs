@@ -66,19 +66,30 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
             return detail;
         }
 
-        public Task<bool> UpdateHomeInfoAsync(HomeInfoEdit model)
+        public async Task<bool> UpdateHomeInfoAsync(HomeInfoEdit model)
         {
-            throw new NotImplementedException();
+            if (model == null) return false;
+            var entity = await _context.HomeInfo.FindAsync(model.Id);
+
+            if (entity?.PrimaryHomeownerId != _userId) return false;
+
+            entity.HomeName = model.HomeName;
+            entity.BuildYear = model.BuildYear;
+            entity.SquareFootage = model.SquareFootage;
+            entity.Beds = model.Beds;
+            entity.Baths = model.Baths;
+
+            return await _context.SaveChangesAsync() == 1;
         }
 
-        public Task<bool> DeleteHomeInfoAsync(int homeId)
+        public async Task<bool> DeleteHomeInfoAsync(int homeId)
         {
-            throw new NotImplementedException();
-        }
+            var entity = await _context.HomeInfo.FindAsync(homeId);
+            if (entity?.PrimaryHomeownerId != _userId)
+                return false;
 
-        public Task<bool> DeleteHomeInfoAsync(string userId)
-        {
-            throw new NotImplementedException();
+            _context.HomeInfo.Remove(entity);
+            return await _context.SaveChangesAsync() == 1;
         }
     }
 }

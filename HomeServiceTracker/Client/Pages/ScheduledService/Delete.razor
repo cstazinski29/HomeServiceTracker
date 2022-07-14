@@ -1,0 +1,86 @@
+﻿@using HomeServiceTracker.Shared.Models.ScheduledService
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient http
+@inject NavigationManager navigation
+@attribute [Authorize]
+
+@page "/scheduledService/delete/{scheduledServiceId:int}"
+
+<h3>Delete Scheduled Service #@scheduledServiceId</h3>
+
+@if (errorMessage != null)
+{
+    <h2 class="text-danger">@errorMessage</h2>
+}
+
+@if (scheduledService != null)
+{
+    <div class="container">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <span>Scheduled Service #@scheduledService.Id</span>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">@scheduledService.ServiceItemId</h4>
+                <p class="card-text">@scheduledService.HomeId</p>
+                <p class="card-text">@scheduledService.LastServiceDate</p>
+                <p class="card-text">@scheduledService.NextServiceDate</p>
+                <p class="card-text">@scheduledService.ScheduledServiceDate</p>
+                <p class="card-text">@scheduledService.ServiceCompleted</p>
+                <p class="card-text">@scheduledService.ServiceProviderId</p>
+                <p class="card-text">@scheduledService.ServiceCost</p>
+                <p class="card-text">@scheduledService.ServiceRating</p>
+            </div>
+            <div class="card-footer text-muted d-flex justify-content-between">
+                <span class="text-left">Created: [insert created date]</span>
+@*                @if (ScheduledService.ModifiedUtc !=null)
+                {
+                    <span class="text-right">Modified: [insert modified date]</span>
+                }*@
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <div class="text-center justify-content-between w-50">
+                <a href=@($"/scheduledService/Index") class="btn btn-outline-primary">Back to Index</a>
+                <a href="#" @onclick="HandleClick" class="btn btn-danger text-white">Delete</a>
+            </div>
+        </div>
+    </div>
+
+    // add detail here to show what the user is deleting
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+@code {
+    [Parameter]
+    public int scheduledServiceId { get; set; }
+    public ScheduledServiceDetail scheduledService { get; set; }
+    public string errorMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        scheduledService = await http.GetFromJsonAsync<ScheduledServiceDetail>($"/api/scheduledService/{scheduledServiceId}");
+    }
+
+    private async void HandleClick()
+    {
+        // call Delete request on API
+        var deleteRes = await http.DeleteAsync($"/api/scheduledService/{scheduledServiceId}");
+
+        // check to make sure call was a success
+        // if successful, navigate back to the Index.razor component
+        if (deleteRes.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/scheduledService/Index");
+        }
+
+        // if not successful, give user an error message
+        else
+        {
+            errorMessage = "Failed to delete your scheduled service.";
+        }
+    }
+}

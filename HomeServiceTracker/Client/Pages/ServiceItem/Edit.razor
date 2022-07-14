@@ -1,0 +1,60 @@
+﻿@using HomeServiceTracker.Shared.Models.ServiceItem
+@using Microsoft.AspNetCore.Authorization
+@inject NavigationManager navigation
+@inject HttpClient http
+@attribute [Authorize]
+
+@page "/serviceItem/edit/{serviceItemId:int}"
+
+<h3>Edit Service Item: @*@model.ServiceName*@</h3>
+
+@if (errorMessage != null)
+{
+    <h5 class="text-danger">@errorMessage</h5>
+}
+
+<div class="container">
+    <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+        <div class="form-group">
+            <label>Service Name</label>
+            <InputText class="form-control" @bind-Value="model.ServiceName" />
+        </div>
+        <div class="form-group">
+            <label>Service Description</label>
+            <InputText class="form-control" @bind-Value="model.ServiceDescription" />
+        </div>
+        <div class="form-group">
+            <label>Service Frequency</label>
+            <InputText class="form-control" @bind-Value="model.ServiceFrequency" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public int serviceItemId { get; set; }
+    //private ServiceItemEdit model { get; set; }
+    private ServiceItemEdit model = new();
+    private string errorMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await http.GetFromJsonAsync<ServiceItemEdit>($"/api/serviceItem/{serviceItemId}");
+    }
+
+    private async void HandleSubmit()
+    {
+        var createRes = await http.PutAsJsonAsync<ServiceItemEdit>($"/api/serviceItem/edit/{serviceItemId}", model);
+        if (createRes.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo($"/serviceItem/{serviceItemId}");
+        }
+        else
+        {
+            errorMessage = "Could not update your service item right now. Please try again later.";
+        }
+    }
+}

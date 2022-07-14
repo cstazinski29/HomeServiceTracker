@@ -53,19 +53,29 @@ namespace HomeServiceTracker.Server.Services.ServiceProviderInfo
             return detail;
         }
 
-        public Task<bool> UpdateServiceProviderInfoAsync(ServiceProviderInfoEdit model)
+        public async Task<bool> UpdateServiceProviderInfoAsync(ServiceProviderInfoEdit model)
         {
-            throw new NotImplementedException();
+            if (model == null) return false;
+            var entity = await _context.ServiceProviders.FindAsync(model.Id);
+
+            // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE PROVIDER
+            //if (entity?.PrimaryHomeownerId != _userId) return false;
+
+            entity.ServiceProviderName= model.ServiceProviderName;
+
+            return await _context.SaveChangesAsync() == 1;
         }
 
-        public Task<bool> DeleteServiceProviderInfoAsync(int serviceProviderInfoId)
+        public async Task<bool> DeleteServiceProviderInfoAsync(int serviceProviderInfoId)
         {
-            throw new NotImplementedException();
+            var entity = await _context.ServiceProviders.FindAsync(serviceProviderInfoId);
+
+            // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE PROVIDER
+            //if (entity?.PrimaryHomeownerId != _userId) return false;
+
+            _context.ServiceProviders.Remove(entity);
+            return await _context.SaveChangesAsync() == 1;
         }
 
-        public Task<bool> DeleteServiceProviderInfoAsync(string userId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

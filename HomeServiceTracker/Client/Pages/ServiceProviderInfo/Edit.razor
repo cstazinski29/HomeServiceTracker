@@ -1,0 +1,52 @@
+﻿@using HomeServiceTracker.Shared.Models.ServiceProviderInfo
+@using Microsoft.AspNetCore.Authorization
+@inject NavigationManager navigation
+@inject HttpClient http
+@attribute [Authorize]
+
+@page "/serviceProviderInfo/edit/{serviceProviderInfoId:int}"
+
+<h3>Edit Service Provider: @model.ServiceProviderName</h3>
+
+@if (errorMessage != null)
+{
+    <h5 class="text-danger">@errorMessage</h5>
+}
+
+<div class="container">
+    <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+        <div class="form-group">
+            <label>Service Provider Name</label>
+            <InputText class="form-control" @bind-Value="model.ServiceProviderName" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public int serviceProviderInfoId { get; set; }
+    //private ServiceProviderInfoEdit model { get; set; }
+    private ServiceProviderInfoEdit model = new();
+    private string errorMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await http.GetFromJsonAsync<ServiceProviderInfoEdit>($"/api/serviceProviderInfo/{serviceProviderInfoId}");
+    }
+
+    private async void HandleSubmit()
+    {
+        var createRes = await http.PutAsJsonAsync<ServiceProviderInfoEdit>($"/api/serviceProviderInfo/edit/{serviceProviderInfoId}", model);
+        if (createRes.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo($"/serviceProviderInfo/{serviceProviderInfoId}");
+        }
+        else
+        {
+            errorMessage = "Could not update your service provider right now. Please try again later.";
+        }
+    }
+}

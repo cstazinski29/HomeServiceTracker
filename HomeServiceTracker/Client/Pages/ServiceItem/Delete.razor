@@ -1,0 +1,80 @@
+﻿@using HomeServiceTracker.Shared.Models.ServiceItem
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient http
+@inject NavigationManager navigation
+@attribute [Authorize]
+
+@page "/serviceItem/delete/{serviceItemId:int}"
+
+<h3>Delete Service Item #@serviceItemId</h3>
+
+@if (errorMessage != null)
+{
+    <h2 class="text-danger">@errorMessage</h2>
+}
+
+@if (serviceItem != null)
+{
+    <div class="container">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <span>Service Item #@serviceItem.Id</span>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">@serviceItem.ServiceName</h4>
+                <p class="card-text">@serviceItem.ServiceDescription</p>
+                <p class="card-text">@serviceItem.ServiceFrequency</p>
+            </div>
+            <div class="card-footer text-muted d-flex justify-content-between">
+                <span class="text-left">Created: [insert created date]</span>
+@*                @if (ServiceItem.ModifiedUtc !=null)
+                {
+                    <span class="text-right">Modified: [insert modified date]</span>
+                }*@
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <div class="text-center justify-content-between w-50">
+                <a href=@($"/serviceItem/Index") class="btn btn-outline-primary">Back to Index</a>
+                <a href="#" @onclick="HandleClick" class="btn btn-danger text-white">Delete</a>
+            </div>
+        </div>
+    </div>
+
+    // add detail here to show what the user is deleting
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+@code {
+    [Parameter]
+    public int serviceItemId { get; set; }
+    public ServiceItemDetail serviceItem { get; set; }
+    public string errorMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        serviceItem = await http.GetFromJsonAsync<ServiceItemDetail>($"/api/serviceItem/{serviceItemId}");
+    }
+
+    private async void HandleClick()
+    {
+        // call Delete request on API
+        var deleteRes = await http.DeleteAsync($"/api/serviceItem/{serviceItemId}");
+
+        // check to make sure call was a success
+        // if successful, navigate back to the Index.razor component
+        if (deleteRes.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/serviceItem/Index");
+        }
+
+        // if not successful, give user an error message
+        else
+        {
+            errorMessage = "Failed to delete your service item.";
+        }
+    }
+}

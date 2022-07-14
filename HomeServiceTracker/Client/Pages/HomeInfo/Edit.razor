@@ -1,0 +1,68 @@
+﻿@using HomeServiceTracker.Shared.Models.HomeInfo
+@using Microsoft.AspNetCore.Authorization
+@inject NavigationManager navigation
+@inject HttpClient http
+@attribute [Authorize]
+
+@page "/homeInfo/edit/{homeId:int}"
+
+<h3>Edit Home: @model.HomeName</h3>
+
+@if (errorMessage != null)
+{
+    <h5 class="text-danger">@errorMessage</h5>
+}
+
+<div class="container">
+    <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+        <div class="form-group">
+            <label>Home Name</label>
+            <InputText class="form-control" @bind-Value="model.HomeName" />
+        </div>
+        <div class="form-group">
+            <label>Build Year</label>
+            <InputNumber class="form-control" @bind-Value="model.BuildYear" />
+        </div>
+        <div class="form-group">
+            <label>Square Footage</label>
+            <InputNumber class="form-control" @bind-Value="model.SquareFootage" />
+        </div>
+        <div class="form-group">
+            <label>Beds</label>
+            <InputNumber class="form-control" @bind-Value="model.Beds" />
+        </div>
+        <div class="form-group">
+            <label>Baths</label>
+            <InputNumber class="form-control" @bind-Value="model.Baths" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public int homeId { get; set; }
+    //private HomeInfoEdit model { get; set; }
+    private HomeInfoEdit model = new();
+    private string errorMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await http.GetFromJsonAsync<HomeInfoEdit>($"/api/homeInfo/{homeId}");
+    }
+
+    private async void HandleSubmit()
+    {
+        var createRes = await http.PutAsJsonAsync<HomeInfoEdit>($"/api/homeInfo/edit/{homeId}", model);
+        if (createRes.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo($"/homeInfo/{homeId}");
+        }
+        else
+        {
+            errorMessage = "Could not update your home right now. Please try again later.";
+        }
+    }
+}

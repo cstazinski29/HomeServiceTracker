@@ -56,18 +56,30 @@ namespace HomeServiceTracker.Server.Services.ServiceItem
             return detail;
         }
 
-        public Task<bool> UpdateServiceItemAsync(ServiceItemEdit model)
+        public async Task<bool> UpdateServiceItemAsync(ServiceItemEdit model)
         {
-            throw new NotImplementedException();
+            if (model == null) return false;
+            var entity = await _context.ServiceItems.FindAsync(model.Id);
+
+            // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE ITEM
+            //if (entity?.PrimaryHomeownerId != _userId) return false;
+
+            entity.ServiceName = model.ServiceName;
+            entity.ServiceDescription = model.ServiceDescription;
+            entity.ServiceFrequency = model.ServiceFrequency;
+
+            return await _context.SaveChangesAsync() == 1;
         }
-        public Task<bool> DeleteServiceItemAsync(int serviceItemId)
+        public async Task<bool> DeleteServiceItemAsync(int serviceItemId)
         {
-            throw new NotImplementedException();
+            var entity = await _context.ServiceItems.FindAsync(serviceItemId);
+            
+            // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE ITEM
+            //if (entity?.PrimaryHomeownerId != _userId) return false;
+
+            _context.ServiceItems.Remove(entity);
+            return await _context.SaveChangesAsync() == 1;
         }
 
-        public Task<bool> DeleteServiceItemAsync(string userId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

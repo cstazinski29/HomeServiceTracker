@@ -9,7 +9,6 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
         Task<HomeInfoDetail> GetHomeInfoByIdAsync(int homeId);
         Task<bool> UpdateHomeInfoAsync(HomeInfoEdit model);
         Task<bool> DeleteHomeInfoAsync(int homeId);
-        Task<bool> DeleteHomeInfoAsync(string userId);
         // userId was previously a string, I changed to guid as that was what marty had in his
         void SetUserId(Guid userId);
     }
