@@ -80,7 +80,7 @@ namespace HomeServiceTracker.Server.Services.ServiceItem
         {
             var entity = await _context.ServiceItems.FindAsync(serviceItemId);
 
-            // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE ITEM
+            // NEED TO ASSIGN A PERMISSION TO DELETE A SERVICE ITEM
             if (entity?.OwnerId != _userId) return false;
 
             _context.ServiceItems.Remove(entity);
