@@ -1,0 +1,49 @@
+﻿@using HomeServiceTracker.Shared.Models.ServiceItem
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient http
+@attribute [Authorize]
+
+@page "/ServiceItem/Index"
+
+<h3>Service Items</h3>
+<a href="/serviceItem/create">Create a Service Item</a>
+
+@if (serviceItem == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Service Name</th>
+                <th>Service Frequency</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ServiceItemListItem service in serviceItem)
+            {
+                <tr>
+                    <td>@service.Id</td>
+                    <td>@service.ServiceName</td>
+                    <td>
+                        <a href=@($"serviceItem/{service.Id}")>Details</a>
+                        <a href=@($"serviceItem/edit/{service.Id}")>Edit</a>
+                        <a href=@($"serviceItem/delete/{service.Id}")>Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>   
+}
+
+@code {
+    private List<ServiceItemListItem> serviceItem;
+    protected override async Task OnInitializedAsync()
+    {
+        serviceItem = await http.GetFromJsonAsync<List<ServiceItemListItem>>("/api/serviceItem");
+    }
+}

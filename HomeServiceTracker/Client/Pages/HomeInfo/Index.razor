@@ -1,0 +1,55 @@
+﻿@using HomeServiceTracker.Shared.Models.HomeInfo
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient http
+@*commented out the authorization below for testing purposes, as I have not worked out the authorization yet*@
+@attribute [Authorize]
+
+@page "/HomeInfo/Index"
+
+<h3>Home Info</h3>
+<a href="/homeInfo/create">Create a Home</a>
+
+@if (homeInfo == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (HomeInfoListItem home in homeInfo)
+            {
+                <tr>
+                    <td>@home.Id</td>
+                    <td>@home.HomeName</td>
+                    <td>
+                        <a href=@($"homeInfo/{home.Id}")>Details</a>
+                        <a href=@($"homeInfo/edit/{home.Id}")>Edit</a>
+                        <a href=@($"homeInfo/delete/{home.Id}")>Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>   
+}
+
+
+@code {
+    // can be a List or an IEnumerable? The others are lists currently; not sure which is better for this
+    // private List<HomeInfoListItem> homeInfo;
+    private IEnumerable<HomeInfoListItem> homeInfo;
+//Not sure what this does here below...
+//This code causes an "unhandled error" message to show; commenting it out gets rid of that banner, and does not seem to impact the app function
+    protected override async Task OnInitializedAsync()
+    {
+        homeInfo = await http.GetFromJsonAsync<List<HomeInfoListItem>>("/api/homeInfo");
+    }
+}

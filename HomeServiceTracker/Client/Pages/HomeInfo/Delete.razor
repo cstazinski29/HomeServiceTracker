@@ -1,0 +1,82 @@
+﻿@using HomeServiceTracker.Shared.Models.HomeInfo
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient http
+@inject NavigationManager navigation
+@attribute [Authorize]
+
+@page "/homeInfo/delete/{homeId:int}"
+
+<h3>Delete Home #@homeId</h3>
+
+@if (errorMessage != null)
+{
+    <h2 class="text-danger">@errorMessage</h2>
+}
+
+@if (homeInfo != null)
+{
+    <div class="container">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <span>Home #@homeInfo.Id</span>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">@homeInfo.HomeName</h4>
+                <p class="card-text">@homeInfo.BuildYear</p>
+                <p class="card-text">@homeInfo.SquareFootage</p>
+                <p class="card-text">@homeInfo.Beds</p>
+                <p class="card-text">@homeInfo.Baths</p>
+            </div>
+            <div class="card-footer text-muted d-flex justify-content-between">
+                <span class="text-left">Created: [insert created date]</span>
+@*                @if (HomeInfo.ModifiedUtc !=null)
+                {
+                    <span class="text-right">Modified: [insert modified date]</span>
+                }*@
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <div class="text-center justify-content-between w-50">
+                <a href=@($"/homeInfo/Index") class="btn btn-outline-primary">Back to Index</a>
+                <a href="#" @onclick="HandleClick" class="btn btn-danger text-white">Delete</a>
+            </div>
+        </div>
+    </div>
+
+    // add home detail here to show what the user is deleting
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+@code {
+    [Parameter]
+    public int homeId { get; set; }
+    public HomeInfoDetail homeInfo { get; set; }
+    public string errorMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        homeInfo = await http.GetFromJsonAsync<HomeInfoDetail>($"/api/homeInfo/{homeId}");
+    }
+
+    private async void HandleClick()
+    {
+        // call Delete request on API
+        var deleteRes = await http.DeleteAsync($"/api/homeInfo/{homeId}");
+
+        // check to make sure call was a success
+        // if successful, navigate back to the Index.razor component
+        if (deleteRes.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/homeInfo/Index");
+        }
+
+        // if not successful, give user an error message
+        else
+        {
+            errorMessage = "Failed to delete your home.";
+        }
+    }
+}

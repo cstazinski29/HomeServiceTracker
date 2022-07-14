@@ -1,0 +1,52 @@
+﻿@using HomeServiceTracker.Shared.Models.ServiceItem
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient http
+@inject NavigationManager navigation
+@attribute [Authorize]
+
+@page "/ServiceItem/Create"
+
+<h3>Create</h3>
+
+@if (errorMessage != null)
+{
+    <h5 class="text-danger">@errorMessage</h5>
+}
+
+<div class="container">
+    <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+        <div class="form-group">
+            <label>Service Name</label>
+            <InputText class="form-control" @bind-Value="model.ServiceName" />
+        </div>
+        <div class="form-group">
+            <label>Service Description</label>
+            <InputText class="form-control" @bind-Value="model.ServiceDescription" />
+        </div>
+        <div class="form-group">
+            <label>Service Frequency</label>
+            <InputText class="form-control" @bind-Value="model.ServiceFrequency" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+    </EditForm>
+</div>
+
+@code {
+    private ServiceItemCreate model = new();
+    private string errorMessage;
+
+    private async void HandleSubmit()
+    {
+        var createRes = await http.PostAsJsonAsync<ServiceItemCreate>("/api/serviceItem", model);
+        if (createRes.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/serviceItem/Index");
+        }
+        else
+        {
+            errorMessage = "Could not create your service item right now. Please try again later.";
+        }
+    }
+}

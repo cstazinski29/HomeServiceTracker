@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace HomeServiceTracker.Server.Controllers
 {
     public class OidcConfigurationController : Controller
@@ -23,3 +24,4 @@ namespace HomeServiceTracker.Server.Controllers
         }
     }
 }
+
