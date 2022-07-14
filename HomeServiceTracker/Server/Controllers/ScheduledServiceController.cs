@@ -2,6 +2,7 @@
 using HomeServiceTracker.Shared.Models.ScheduledService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HomeServiceTracker.Server.Controllers
 {
@@ -16,17 +17,40 @@ namespace HomeServiceTracker.Server.Controllers
             _scheduledServiceService = scheduledServiceService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
+        private Guid GetUserId()
         {
+            var userIdClaim = User.Claims.First(i => i.Type == ClaimTypes.NameIdentifier).Value;
+            if (userIdClaim == null)
+                return default;
+            return Guid.Parse(userIdClaim);
+        }
+
+        private bool SetUserIdInService()
+        {
+            var userId = GetUserId();
+            if (userId == null)
+                return false;
+            _scheduledServiceService.SetUserId(userId);
+            return true;
+        }
+
+        [HttpGet]
+        public async Task<List<ScheduledServiceListItem>> Index()
+        {
+            //var scheduledServices = await _scheduledServiceService.GetAllScheduledServicesAsync();
+            //return Ok(scheduledServices);
+
+            if (!SetUserIdInService()) return new List<ScheduledServiceListItem>();
             var scheduledServices = await _scheduledServiceService.GetAllScheduledServicesAsync();
-            return Ok(scheduledServices);
+            return scheduledServices.ToList();
         }
 
         // NEED TO UPDATE SCHEDULED SERVICE SERVICE WITH THE GET BY ID METHOD FIRST
         [HttpGet("{id}")]
         public async Task<IActionResult> ScheduledService(int id)
         {
+            if (!SetUserIdInService()) return Unauthorized();
+
             var scheduledService = await _scheduledServiceService.GetScheduledServiceByIdAsync(id);
             if (scheduledService == null)
                 return NotFound();
@@ -37,6 +61,8 @@ namespace HomeServiceTracker.Server.Controllers
         public async Task<IActionResult> Create(ScheduledServiceCreate model)
         {
             if (model == null || !ModelState.IsValid) return BadRequest();
+            if (!SetUserIdInService()) return Unauthorized();
+
             bool wasSuccessful = await _scheduledServiceService.CreateScheduledServiceAsync(model);
             if (wasSuccessful)
                 return Ok();
@@ -47,7 +73,8 @@ namespace HomeServiceTracker.Server.Controllers
         public async Task<IActionResult> Edit(int id, ScheduledServiceEdit model)
         {
             // I think I'll need to explore this permissioning further
-            //if (!SetUserIdInService()) return Unauthorized();
+            if (!SetUserIdInService()) return Unauthorized();
+
             if (model == null || !ModelState.IsValid) return BadRequest();
             if (model.Id != id) return BadRequest();
 
@@ -60,7 +87,7 @@ namespace HomeServiceTracker.Server.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             // I think I'll need to explore this permissioning further
-            //if (!SetUserIdInService()) return Unauthorized();
+            if (!SetUserIdInService()) return Unauthorized();
 
             var service = await _scheduledServiceService.GetScheduledServiceByIdAsync(id);
             if (service == null) return NotFound();

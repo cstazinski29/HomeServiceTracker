@@ -16,5 +16,6 @@ namespace HomeServiceTracker.Server.Models
         public int ServiceProviderId { get; set; }
         public float ServiceCost { get; set; }
         public int ServiceRating { get; set; }
+        public Guid OwnerId { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using HomeServiceTracker.Shared.Models.ServiceItem;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HomeServiceTracker.Server.Controllers
 {
@@ -16,16 +17,38 @@ namespace HomeServiceTracker.Server.Controllers
             _serviceItemService = serviceItemService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
+        private Guid GetUserId()
         {
+            var userIdClaim = User.Claims.First(i => i.Type == ClaimTypes.NameIdentifier).Value;
+            if (userIdClaim == null)
+                return default;
+            return Guid.Parse(userIdClaim);
+        }
+
+        private bool SetUserIdInService()
+        {
+            var userId = GetUserId();
+            if (userId == null)
+                return false;
+            _serviceItemService.SetUserId(userId);
+            return true;
+        }
+
+        [HttpGet]
+        public async Task<List<ServiceItemListItem>> Index()
+        {
+            //var serviceItems = await _serviceItemService.GetAllServiceItemsAsync();
+            //return Ok(serviceItems);
+
+            if (!SetUserIdInService()) return new List<ServiceItemListItem>();
             var serviceItems = await _serviceItemService.GetAllServiceItemsAsync();
-            return Ok(serviceItems);
+            return serviceItems.ToList();
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> ServiceItem(int id)
         {
+            if (!SetUserIdInService()) return Unauthorized();
             var serviceItem = await _serviceItemService.GetServiceItemByIdAsync(id);
             if (serviceItem == null)
                 return NotFound();
@@ -36,6 +59,7 @@ namespace HomeServiceTracker.Server.Controllers
         public async Task<IActionResult> Create(ServiceItemCreate model)
         {
             if (model == null || !ModelState.IsValid) return BadRequest();
+            if (!SetUserIdInService()) return Unauthorized();
             bool wasSuccessful = await _serviceItemService.CreateServiceItemAsync(model);
 
             if (wasSuccessful)
@@ -47,7 +71,9 @@ namespace HomeServiceTracker.Server.Controllers
         public async Task<IActionResult> Edit(int id, ServiceItemEdit model)
         {
             // I think I'll need to explore this permissioning further
-            //if (!SetUserIdInService()) return Unauthorized();
+            // E.G. ADD A CHECK FOR WHETHER USER HAS PERMISSION TO EDIT (OWNERID == USERID)
+
+            if (!SetUserIdInService()) return Unauthorized();
             if (model == null || !ModelState.IsValid) return BadRequest();
             if (model.Id != id) return BadRequest();
 
@@ -60,7 +86,10 @@ namespace HomeServiceTracker.Server.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             // I think I'll need to explore this permissioning further
-            //if (!SetUserIdInService()) return Unauthorized();
+            // E.G. ADD A CHECK FOR WHETHER USER HAS PERMISSION TO DELETE (OWNERID == USERID)
+                // there is a check for ownerid == userId in the GetServiceItemByIdAsync method in the service
+
+            if (!SetUserIdInService()) return Unauthorized();
 
             var service = await _serviceItemService.GetServiceItemByIdAsync(id);
             if (service == null) return NotFound();

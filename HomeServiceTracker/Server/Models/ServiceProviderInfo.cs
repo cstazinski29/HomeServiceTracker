@@ -6,5 +6,6 @@
         public string ServiceProviderName { get; set; }
         public int NumberOfServices { get; set; }
         public float AverageServiceProviderRating { get; set; }
+        public Guid OwnerId { get; set; }
     }
 }
