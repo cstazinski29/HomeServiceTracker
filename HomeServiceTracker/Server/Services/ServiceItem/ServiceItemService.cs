@@ -12,6 +12,9 @@ namespace HomeServiceTracker.Server.Services.ServiceItem
             _context = context;
         }
 
+        private Guid _userId;
+        public void SetUserId(Guid userId) => _userId = userId;
+
         public async Task<bool> CreateServiceItemAsync(ServiceItemCreate model)
         {
             if (model == null)
@@ -20,7 +23,8 @@ namespace HomeServiceTracker.Server.Services.ServiceItem
             {
                 ServiceName = model.ServiceName,
                 ServiceDescription = model.ServiceDescription,
-                ServiceFrequency = model.ServiceFrequency
+                ServiceFrequency = model.ServiceFrequency,
+                OwnerId = _userId
             };
 
             _context.ServiceItems.Add(serviceItemEntity);
@@ -30,7 +34,8 @@ namespace HomeServiceTracker.Server.Services.ServiceItem
 
         public async Task<IEnumerable<ServiceItemListItem>> GetAllServiceItemsAsync()
         {
-            var serviceItemQuery = _context.ServiceItems.Select(entity => new ServiceItemListItem
+            var serviceItemQuery = _context.ServiceItems.Where(o => o.OwnerId == _userId)
+                .Select(entity => new ServiceItemListItem
             {
                 Id = entity.Id,
                 ServiceName = entity.ServiceName,
@@ -39,9 +44,10 @@ namespace HomeServiceTracker.Server.Services.ServiceItem
             return await serviceItemQuery.ToListAsync();
         }
 
+
         public async Task<ServiceItemDetail> GetServiceItemByIdAsync(int serviceItemId)
         {
-            var serviceItemEntity = await _context.ServiceItems.FirstOrDefaultAsync(s => s.Id == serviceItemId);
+            var serviceItemEntity = await _context.ServiceItems.FirstOrDefaultAsync(s => s.Id == serviceItemId && s.OwnerId == _userId);
 
             if (serviceItemEntity is null)
                 return null;
@@ -62,7 +68,7 @@ namespace HomeServiceTracker.Server.Services.ServiceItem
             var entity = await _context.ServiceItems.FindAsync(model.Id);
 
             // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE ITEM
-            //if (entity?.PrimaryHomeownerId != _userId) return false;
+            if (entity?.OwnerId != _userId) return false;
 
             entity.ServiceName = model.ServiceName;
             entity.ServiceDescription = model.ServiceDescription;
@@ -73,9 +79,9 @@ namespace HomeServiceTracker.Server.Services.ServiceItem
         public async Task<bool> DeleteServiceItemAsync(int serviceItemId)
         {
             var entity = await _context.ServiceItems.FindAsync(serviceItemId);
-            
+
             // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE ITEM
-            //if (entity?.PrimaryHomeownerId != _userId) return false;
+            if (entity?.OwnerId != _userId) return false;
 
             _context.ServiceItems.Remove(entity);
             return await _context.SaveChangesAsync() == 1;

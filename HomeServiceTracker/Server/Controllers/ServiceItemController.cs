@@ -2,6 +2,7 @@
 using HomeServiceTracker.Shared.Models.ServiceItem;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HomeServiceTracker.Server.Controllers
 {
@@ -15,6 +16,23 @@ namespace HomeServiceTracker.Server.Controllers
         {
             _serviceItemService = serviceItemService;
         }
+
+        //private Guid GetUserId()
+        //{
+        //    var userIdClaim = User.Claims.First(i => i.Type == ClaimTypes.NameIdentifier).Value;
+        //    if (userIdClaim == null)
+        //        return default;
+        //    return Guid.Parse(userIdClaim);
+        //}
+
+        //private bool SetUserIdInService()
+        //{
+        //    var userId = GetUserId();
+        //    if (userId == null)
+        //        return false;
+        //    _serviceItemService.SetUserId(userId);
+        //    return true;
+        //}
 
         [HttpGet]
         public async Task<IActionResult> Index()
