@@ -73,19 +73,35 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             return detail;
         }
 
-        public Task<bool> UpdateScheduledServiceAsync(ScheduledServiceEdit model)
+        public async Task<bool> UpdateScheduledServiceAsync(ScheduledServiceEdit model)
         {
-            throw new NotImplementedException();
+            if (model == null) return false;
+            var entity = await _context.ScheduledServices.FindAsync(model.Id);
+
+            // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE
+            //if (entity?.PrimaryHomeownerId != _userId) return false;
+
+            entity.ServiceItemId = model.ServiceItemId;
+            entity.HomeId = model.HomeId;
+            entity.ScheduledServiceDate = model.ScheduledServiceDate;
+            entity.ServiceCompleted = model.ServiceCompleted;
+            entity.ServiceProviderId = model.ServiceProviderId;
+            entity.ServiceCost = model.ServiceCost;
+            entity.ServiceRating = model.ServiceRating;
+
+            return await _context.SaveChangesAsync() == 1;
         }
 
-        public Task<bool> DeleteScheduledServiceAsync(int scheduledServiceId)
+        public async Task<bool> DeleteScheduledServiceAsync(int scheduledServiceId)
         {
-            throw new NotImplementedException();
+            var entity = await _context.ScheduledServices.FindAsync(scheduledServiceId);
+
+            // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE ITEM
+            //if (entity?.PrimaryHomeownerId != _userId) return false;
+
+            _context.ScheduledServices.Remove(entity);
+            return await _context.SaveChangesAsync() == 1;
         }
 
-        public Task<bool> DeleteScheduledServiceAsync(string userId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

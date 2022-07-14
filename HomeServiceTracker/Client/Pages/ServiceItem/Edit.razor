@@ -21,11 +21,11 @@
         </div>
         <div class="form-group">
             <label>Service Description</label>
-            <InputNumber class="form-control" @bind-Value="model.ServiceDescription" />
+            <InputText class="form-control" @bind-Value="model.ServiceDescription" />
         </div>
         <div class="form-group">
             <label>Service Frequency</label>
-            <InputNumber class="form-control" @bind-Value="model.ServiceFrequency" />
+            <InputText class="form-control" @bind-Value="model.ServiceFrequency" />
         </div>
         <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
         <DataAnnotationsValidator />
