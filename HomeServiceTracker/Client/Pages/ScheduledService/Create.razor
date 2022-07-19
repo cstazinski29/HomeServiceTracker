@@ -1,5 +1,7 @@
 ﻿@using HomeServiceTracker.Shared.Models.ScheduledService
+@using HomeServiceTracker.Shared.Models.ServiceItem
 @using Microsoft.AspNetCore.Authorization
+@*@using System.Web.Mvc*@
 @inject HttpClient http
 @inject NavigationManager navigation
 @attribute [Authorize]
@@ -16,8 +18,17 @@
 <div class="container">
     <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
         <div class="form-group">
-            <label>Service Item Id</label>
-            <InputNumber class="form-control" @bind-Value="model.ServiceItemId" />
+            <label>Service Item @*Id*@</label>
+            @*<InputNumber class="form-control" @bind-Value="model.ServiceItemId" />*@
+
+            <select class="form-control" @bind="model.ServiceItemId"> 
+                <option value="">-- Select Service --</option> 
+                @foreach (var service in serviceItem) 
+                { 
+                    <option value="@service.Id">@service.ServiceName</option> 
+                } 
+            </select>
+
         </div>
         <div class="form-group">
             <label>Home Id</label>
@@ -51,6 +62,9 @@
             <label>Service Rating</label>
             <InputNumber class="form-control" @bind-Value="model.ServiceRating" />
         </div>
+
+
+
         <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -60,6 +74,15 @@
 @code {
     private ScheduledServiceCreate model = new();
     private string errorMessage;
+
+    //private List<ServiceItemListItem> serviceItem;
+    private List<ServiceItemListItem> serviceItem = new List<ServiceItemListItem>();
+    protected override async Task OnInitializedAsync()
+    {
+        serviceItem = await http.GetFromJsonAsync<List<ServiceItemListItem>>("/api/serviceItem");
+    }
+
+
 
     private async void HandleSubmit()
     {
@@ -73,4 +96,26 @@
             errorMessage = "Could not create your service right now. Please try again later.";
         }
     }
+
+    //List<ServiceItemListItem> serviceItemList = new List<ServiceItemListItem>();
+
+    //private async Task<List<ServiceItemListItem>> OnInitAsync()
+    //{
+    //    serviceItemList = await http.GetFromJsonAsync<List<ServiceItemListItem>>("/api/serviceItem");
+    //}
+
+
+    //private async void GetServiceItemList()
+    //{
+    //    //var serviceItemOptions = new List<SelectListItem>();
+    //    //serviceItemOptions = await http.GetFromJsonAsync<SelectList<ServiceItemListItem>("serviceName","serviceItemId")>("/api/serviceItem");
+    //    var so = new SelectList((await http.GetFromJsonAsync<ServiceItemListItem>("/api/serviceItem").ToList()), "ServiceName", "ServiceItemId");
+    //}
+
+    //private IEnumerable<SelectListItem> serviceItemOptions = new List<SelectListItem>();
+    //serviceItemOptions = await _context.ServiceItems.Select(s => new SelectListItem()
+    //        {
+    //            Text = s.ServiceName,
+    //            Value = s.Id.ToString()
+    //        }).ToListAsync();
 }
