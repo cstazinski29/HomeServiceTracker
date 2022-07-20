@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace HomeServiceTracker.Shared.Models.ScheduledService
 {
@@ -20,8 +21,11 @@ namespace HomeServiceTracker.Shared.Models.ScheduledService
         [Required]
         public DateTime? ScheduledServiceDate { get; set; }
         public bool ServiceCompleted { get; set; }
+        [Required]
         public int ServiceProviderId { get; set; }
         public float ServiceCost { get; set; }
         public int ServiceRating { get; set; }
+
+        // public IEnumerable<SelectListItem> ServiceItemOptions { get; set; } = new List<SelectListItem>();
     }
 }

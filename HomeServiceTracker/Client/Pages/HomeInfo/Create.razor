@@ -18,7 +18,7 @@
     <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
         <div class="form-group">
             <label>Home Name</label>
-            <InputText class="form-control" @bind-Value="model.HomeName" />
+            <InputText class="form-control" autofocus @bind-Value="model.HomeName" />
         </div>
         <div class="form-group">
             <label>Build Year</label>

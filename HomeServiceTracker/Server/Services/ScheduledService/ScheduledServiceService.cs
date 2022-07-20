@@ -1,6 +1,7 @@
 ﻿using HomeServiceTracker.Server.Data;
 using HomeServiceTracker.Shared.Models.ScheduledService;
 using Microsoft.EntityFrameworkCore;
+using System.Web.Mvc;
 
 namespace HomeServiceTracker.Server.Services.ScheduledService
 {
@@ -20,6 +21,12 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             if (model == null)
                 return false;
 
+            //IEnumerable<SelectListItem> serviceItemOptions = await _context.ServiceItems.Select(s => new SelectListItem()
+            //{
+            //    Text = s.ServiceName,
+            //    Value = s.Id.ToString()
+            //}).ToListAsync();
+
             var scheduledServiceEntity = new HomeServiceTracker.Server.Models.ScheduledService
             {
                 // Pretty sure I need to cut this down & make some of the fields auto-populate based on the user & other references (such as latest date)
@@ -34,6 +41,7 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
                 ServiceRating = model.ServiceRating,
                 OwnerId = _userId
             };
+
             _context.ScheduledServices.Add(scheduledServiceEntity);
             var numberOfChanges = await _context.SaveChangesAsync();
             return numberOfChanges == 1;
