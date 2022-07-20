@@ -25,7 +25,16 @@
         </div>
         <div class="form-group">
             <label>Service Frequency</label>
-            <InputText class="form-control" @bind-Value="model.ServiceFrequency" />
+            @*<InputText class="form-control" @bind-Value="model.ServiceFrequency" />*@
+
+            <select class="form-control" @bind="model.ServiceFrequency"> 
+                <option value="">-- Select Frequency --</option> 
+                @foreach (var f in serviceFrequencyValues) 
+                { 
+                    <option>@f.ToString()</option> 
+                } 
+            </select>
+
         </div>
         <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
         <DataAnnotationsValidator />
@@ -36,6 +45,7 @@
 @code {
     private ServiceItemCreate model = new();
     private string errorMessage;
+    private string[] serviceFrequencyValues { get; set; } = Enum.GetNames(typeof(Frequency));
 
     private async void HandleSubmit()
     {
@@ -48,5 +58,13 @@
         {
             errorMessage = "Could not create your service item right now. Please try again later.";
         }
+    }
+
+    public enum Frequency
+    {
+        Yearly,
+        Monthly,
+        Weekly,
+        Daily
     }
 }

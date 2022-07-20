@@ -1,7 +1,8 @@
 ﻿@using HomeServiceTracker.Shared.Models.ScheduledService
 @using HomeServiceTracker.Shared.Models.ServiceItem
+@using HomeServiceTracker.Shared.Models.HomeInfo
+@using HomeServiceTracker.Shared.Models.ServiceProviderInfo
 @using Microsoft.AspNetCore.Authorization
-@*@using System.Web.Mvc*@
 @inject HttpClient http
 @inject NavigationManager navigation
 @attribute [Authorize]
@@ -18,12 +19,12 @@
 <div class="container">
     <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
         <div class="form-group">
-            <label>Service Item @*Id*@</label>
+            <label>Service Item</label>
             @*<InputNumber class="form-control" @bind-Value="model.ServiceItemId" />*@
 
             <select class="form-control" @bind="model.ServiceItemId"> 
                 <option value="">-- Select Service --</option> 
-                @foreach (var service in serviceItem) 
+                @foreach (var service in serviceItemList) 
                 { 
                     <option value="@service.Id">@service.ServiceName</option> 
                 } 
@@ -31,8 +32,17 @@
 
         </div>
         <div class="form-group">
-            <label>Home Id</label>
-            <InputNumber class="form-control" @bind-Value="model.HomeId" />
+            <label>Home</label>
+            @*<InputNumber class="form-control" @bind-Value="model.HomeId" />*@
+
+            <select class="form-control" @bind="model.HomeId"> 
+                <option value="">-- Select Home --</option> 
+                @foreach (var home in homeList) 
+                { 
+                    <option value="@home.Id">@home.HomeName</option> 
+                } 
+            </select>
+
         </div>
         <div class="form-group">
             <label>Last Service Date</label>
@@ -51,8 +61,17 @@
             <InputCheckbox class="form-control" @bind-Value="model.ServiceCompleted" />
         </div>
         <div class="form-group">
-            <label>Service Provider Id</label>
-            <InputNumber class="form-control" @bind-Value="model.ServiceProviderId" />
+            <label>Service Provider</label>
+            @*<InputNumber class="form-control" @bind-Value="model.ServiceProviderId" />*@
+
+            <select class="form-control" @bind="model.ServiceProviderId"> 
+                <option value="">-- Select Service Provider --</option> 
+                @foreach (var serviceProvider in serviceProviderList) 
+                { 
+                    <option value="@serviceProvider.Id">@serviceProvider.ServiceProviderName</option> 
+                } 
+            </select>
+
         </div>
         <div class="form-group">
             <label>Service Cost</label>
@@ -62,8 +81,6 @@
             <label>Service Rating</label>
             <InputNumber class="form-control" @bind-Value="model.ServiceRating" />
         </div>
-
-
 
         <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
         <DataAnnotationsValidator />
@@ -76,10 +93,15 @@
     private string errorMessage;
 
     //private List<ServiceItemListItem> serviceItem;
-    private List<ServiceItemListItem> serviceItem = new List<ServiceItemListItem>();
+    private List<ServiceItemListItem> serviceItemList = new List<ServiceItemListItem>();
+    private List<HomeInfoListItem> homeList = new List<HomeInfoListItem>();
+    private List<ServiceProviderInfoListItem> serviceProviderList = new List<ServiceProviderInfoListItem>();
+
     protected override async Task OnInitializedAsync()
     {
-        serviceItem = await http.GetFromJsonAsync<List<ServiceItemListItem>>("/api/serviceItem");
+        serviceItemList = await http.GetFromJsonAsync<List<ServiceItemListItem>>("/api/serviceItem");
+        homeList = await http.GetFromJsonAsync<List<HomeInfoListItem>>("/api/homeInfo");
+        serviceProviderList = await http.GetFromJsonAsync<List<ServiceProviderInfoListItem>>("/api/serviceProviderInfo");
     }
 
 
