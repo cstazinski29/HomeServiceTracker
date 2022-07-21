@@ -42,7 +42,8 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
                 .Select(h => new HomeInfoListItem
                 {
                     Id = h.Id,
-                    HomeName = h.HomeName
+                    HomeName = h.HomeName,
+                    BuildYear = h.BuildYear
                 });
             return await homeInfoQuery.ToListAsync();
         }

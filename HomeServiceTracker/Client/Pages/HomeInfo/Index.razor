@@ -15,7 +15,7 @@
 }
 else
 {
-    <table class="table">
+@*    <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
@@ -38,7 +38,29 @@ else
             }
         </tbody>
 
-    </table>   
+    </table>*@
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @foreach (HomeInfoListItem home in homeInfo)
+        {
+            <div class="col">
+                <div class="card h-auto">
+                    <a href=@($"homeInfo/{home.Id}")>
+                        <img src="https://th.bing.com/th/id/R.9a4036e8bc65d2f1557ccbbdad0b528a?rik=o952InUla0i3iA&riu=http%3a%2f%2fwww.chifudesign.com%2fwp-content%2fuploads%2f2018%2f12%2f1544947782_hqdefault.jpg&ehk=2YMwCuRpjzFUd4TSVLdrcYL7nEE%2fC5XzxVo3bmeOU3I%3d&risl=&pid=ImgRaw&r=0" 
+                            class="card-img-top h-25" alt="Home Image">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">@home.HomeName</h5>
+                        <p class="card-text">Build Year: @home.BuildYear</p>
+                        @*<a href="#" class="btn btn-primary">Go somewhere</a>*@
+                        <a class="btn btn-primary" href=@($"homeInfo/{home.Id}")>Details</a>
+                        <a class="btn btn-primary" href=@($"homeInfo/edit/{home.Id}")>Edit</a>
+                        @*                            <a class="btn btn-primary" href=@($"homeInfo/delete/{home.Id}")>Delete</a>*@
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
 }
 
 
