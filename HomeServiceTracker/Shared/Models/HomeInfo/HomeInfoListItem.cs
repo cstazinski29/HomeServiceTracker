@@ -10,6 +10,6 @@ namespace HomeServiceTracker.Shared.Models.HomeInfo
     {
         public int Id { get; set; }
         public string HomeName { get; set; }
-        //public int BuildYear { get; set; }
+        public int BuildYear { get; set; }
     }
 }
