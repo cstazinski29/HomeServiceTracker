@@ -50,14 +50,17 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
         public async Task<IEnumerable<ScheduledServiceListItem>> GetAllScheduledServicesAsync()
         {
             // need to add a user reference to scheduled services so that we can only pull those relevant to the user
-            var scheduledServiceQuery = _context.ScheduledServices.Where(o => o.OwnerId == _userId)
+            var scheduledServiceQuery = _context.ScheduledServices
+                .Include(s => s.ServiceItem)
+                .Where(o => o.OwnerId == _userId)
                 .Select(entity => new ScheduledServiceListItem
             {
                 Id = entity.Id,
                 ServiceItemId = entity.ServiceItemId,
                 LastServiceDate = entity.LastServiceDate,
                 NextServiceDate = entity.NextServiceDate,
-                ScheduledServiceDate = entity.ScheduledServiceDate
+                ScheduledServiceDate = entity.ScheduledServiceDate,
+                ServiceName = entity.ServiceItem.ServiceName
             });
 
             return await scheduledServiceQuery.ToListAsync();

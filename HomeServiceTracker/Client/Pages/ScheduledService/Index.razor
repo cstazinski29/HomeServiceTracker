@@ -1,4 +1,5 @@
 ﻿@using HomeServiceTracker.Shared.Models.ScheduledService
+@using HomeServiceTracker.Shared.Models.ServiceItem
 @using Microsoft.AspNetCore.Authorization
 @inject HttpClient http
 @attribute [Authorize]
@@ -30,10 +31,10 @@ else
             {
                 <tr>
                     <td>@service.Id</td>
-                    <td>@service.ServiceItemId</td>
-                    <td>@service.LastServiceDate</td>
-                    <td>@service.NextServiceDate</td>
-                    <td>@service.ScheduledServiceDate</td>
+                    <td>@service.ServiceName</td>
+                    <td>@service.LastServiceDate.GetValueOrDefault().ToShortDateString()</td>
+                    <td>@service.NextServiceDate.GetValueOrDefault().ToShortDateString()</td>
+                    <td>@service.ScheduledServiceDate.GetValueOrDefault().ToShortDateString()</td>
                     <td>
                         <a href=@($"scheduledService/{service.Id}")>Details</a>
                         <a href=@($"scheduledService/edit/{service.Id}")>Edit</a>
@@ -47,8 +48,19 @@ else
 
 @code {
     private List<ScheduledServiceListItem> scheduledService;
+    //private List<ServiceItemListItem> serviceItemList = new List<ServiceItemListItem>();
+
+
     protected override async Task OnInitializedAsync()
     {
         scheduledService = await http.GetFromJsonAsync<List<ScheduledServiceListItem>>("/api/scheduledService");
+        //serviceItemList = await http.GetFromJsonAsync<List<ServiceItemListItem>>("/api/serviceItem");
     }
+
+    //private string GetServiceName(int serviceItemId)
+    //{
+    //    var serviceItem = serviceItemList.Where(s => s.Id == serviceItemId);
+    //    //var serviceName = serviceItem.ServiceName
+    //    return "yes";
+    //}
 }
