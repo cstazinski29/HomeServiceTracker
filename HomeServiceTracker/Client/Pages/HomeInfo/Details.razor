@@ -4,8 +4,8 @@
 @attribute [Authorize]
 @page "/homeInfo/{homeId:int}"
 
-<h3>Home Info</h3>
-@*<h3>@homeInfo.HomeName</h3>*@
+<h3>@homeInfo.HomeName</h3>
+@*<h3>Home Info</h3>*@
 
 @if (homeInfo == null)
 {
@@ -16,7 +16,7 @@ else
     <div class="container">
         <div class="card">
             <div class="card-header d-flex justify-content-between">
-                <span>Home #@homeInfo.Id</span>
+                <span>Home Id #@homeInfo.Id</span>
             </div>
             <div class="card-body">
                 @*<h4 class="card-title"><span class="fw-bold">Home Name: </span>@homeInfo.HomeName</h4>*@
