@@ -6,7 +6,7 @@
 @page "/ServiceProviderInfo/Index"
 
 <h3>Service Providers</h3>
-<a href="/serviceProviderInfo/create">Create a Service Provider</a>
+<a href="/serviceProviderInfo/create" class="btn btn-success btn-block">Create a Service Provider</a>
 
 @if (serviceProviderInfo == null)
 {
@@ -14,7 +14,7 @@
 }
 else
 {
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Id</th>
@@ -31,9 +31,9 @@ else
                     <td>@service.ServiceProviderName</td>
                     <td>@service.AverageServiceProviderRating</td>
                     <td>
-                        <a href=@($"serviceProviderInfo/{service.Id}")>Details</a>
-                        <a href=@($"serviceProviderInfo/edit/{service.Id}")>Edit</a>
-                        <a href=@($"serviceProviderInfo/delete/{service.Id}")>Delete</a>
+                        <a href=@($"serviceProviderInfo/{service.Id}") class="btn btn-outline-primary">Details</a>
+                        <a href=@($"serviceProviderInfo/edit/{service.Id}") class="btn btn-outline-secondary">Edit</a>
+                        @*<a href=@($"serviceProviderInfo/delete/{service.Id}")>Delete</a>*@
                     </td>
                 </tr>
             }

@@ -68,7 +68,11 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
 
         public async Task<ScheduledServiceDetail> GetScheduledServiceByIdAsync(int scheduledServiceId)
         {
-            var scheduledServiceEntity = await _context.ScheduledServices.FirstOrDefaultAsync(s => s.Id == scheduledServiceId && s.OwnerId == _userId);
+            var scheduledServiceEntity = await _context.ScheduledServices
+                .Include(i => i.ServiceItem)
+                .Include(h => h.HomeInfo)
+                .Include(p => p.ServiceProviderInfo)
+                .FirstOrDefaultAsync(s => s.Id == scheduledServiceId && s.OwnerId == _userId);
 
             if (scheduledServiceEntity is null)
                 return null;
@@ -83,7 +87,10 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
                 ServiceCompleted = scheduledServiceEntity.ServiceCompleted,
                 ServiceProviderId = scheduledServiceEntity.ServiceProviderId,
                 ServiceCost = scheduledServiceEntity.ServiceCost,
-                ServiceRating = scheduledServiceEntity.ServiceRating
+                ServiceRating = scheduledServiceEntity.ServiceRating,
+                ServiceName = scheduledServiceEntity.ServiceItem.ServiceName,
+                HomeName = scheduledServiceEntity.HomeInfo.HomeName,
+                ServiceProviderName = scheduledServiceEntity.ServiceProviderInfo.ServiceProviderName
             };
 
             return detail;

@@ -7,7 +7,7 @@
 @page "/ScheduledService/Index"
 
 <h3>Scheduled Services</h3>
-<a href="/scheduledService/create">Schedule a Service</a>
+<a href="/scheduledService/create" class="btn btn-success btn-block">Schedule a Service</a>
 
 @if (scheduledService == null)
 {
@@ -15,13 +15,13 @@
 }
 else
 {
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Service Item</th>
-                <th>Last Service Date</th>
-                <th>Next Service Date</th>
+@*                <th>Last Service Date</th>
+                <th>Next Service Date</th>*@
                 <th>Scheduled Service Date</th>
                 <th>Options</th>
             </tr>
@@ -32,13 +32,13 @@ else
                 <tr>
                     <td>@service.Id</td>
                     <td>@service.ServiceName</td>
-                    <td>@service.LastServiceDate.GetValueOrDefault().ToShortDateString()</td>
-                    <td>@service.NextServiceDate.GetValueOrDefault().ToShortDateString()</td>
+@*                    <td>@service.LastServiceDate.GetValueOrDefault().ToShortDateString()</td>
+                    <td>@service.NextServiceDate.GetValueOrDefault().ToShortDateString()</td>*@
                     <td>@service.ScheduledServiceDate.GetValueOrDefault().ToShortDateString()</td>
                     <td>
-                        <a href=@($"scheduledService/{service.Id}")>Details</a>
-                        <a href=@($"scheduledService/edit/{service.Id}")>Edit</a>
-                        <a href=@($"scheduledService/delete/{service.Id}")>Delete</a>
+                        <a href=@($"scheduledService/{service.Id}") class="btn btn-outline-primary">Details</a>
+                        <a href=@($"scheduledService/edit/{service.Id}") class="btn btn-outline-secondary">Edit</a>
+                        @*<a href=@($"scheduledService/delete/{service.Id}")>Delete</a>*@
                     </td>
                 </tr>
             }

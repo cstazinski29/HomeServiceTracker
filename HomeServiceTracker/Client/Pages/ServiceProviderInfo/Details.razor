@@ -18,9 +18,9 @@ else
                 <span>Service Item #@serviceProviderInfoId</span>
             </div>
             <div class="card-body">
-                <h4 class="card-title">@ServiceProviderInfo.ServiceProviderName</h4>
-                <p class="card-text">@ServiceProviderInfo.NumberOfServices</p>
-                <p class="card-text">@ServiceProviderInfo.AverageServiceProviderRating</p>
+                <p class="card-text"><span class="fw-bold">Service Provider Name: </span>@ServiceProviderInfo.ServiceProviderName</p>
+                <p class="card-text"><span class="fw-bold">Number of Services: </span>@ServiceProviderInfo.NumberOfServices</p>
+                <p class="card-text"><span class="fw-bold">Average Rating: </span>@ServiceProviderInfo.AverageServiceProviderRating</p>
                 @*add more fields*@
             </div>
             <div class="card-footer text-muted d-flex justify-content-between">
@@ -32,12 +32,13 @@ else
             </div>
         </div>
         <div class="d-flex justify-content-center mt-3">
-            <div class="text-center justify-content-between w-25">
-                <a href=@($"serviceProviderInfo/edit/{serviceProviderInfoId}") class="btn btn-outline-primary">Edit</a>
-                <a href=@($"serviceProviderInfo/delete/{serviceProviderInfoId}") class="btn btn-outline-danger">Delete</a>
+            <div class="text-center justify-content-between">
+                <a href=@($"serviceProviderInfo/edit/{serviceProviderInfoId}") class="btn btn-outline-secondary">Edit</a>
+                <a href="/serviceProviderInfo/index" class="btn btn-outline-primary">Back to Index</a>
+                @*<a href=@($"serviceProviderInfo/delete/{serviceProviderInfoId}") class="btn btn-outline-danger">Delete</a>*@
 
-                <hr />
-                <a href="/serviceProviderInfo/index">Back to Service Item Index</a>
+                @*<hr />
+                <a href="/serviceProviderInfo/index">Back to Service Provider Index</a>*@
             </div>
         </div>
     </div>
