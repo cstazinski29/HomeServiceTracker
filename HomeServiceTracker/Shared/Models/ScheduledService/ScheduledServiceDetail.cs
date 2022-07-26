@@ -18,5 +18,8 @@ namespace HomeServiceTracker.Shared.Models.ScheduledService
         public int ServiceProviderId { get; set; }
         public float ServiceCost { get; set; }
         public int ServiceRating { get; set; }
+        public string ServiceName { get; set; }
+        public string HomeName { get; set; }
+        public string ServiceProviderName { get; set; }
     }
 }

@@ -50,14 +50,17 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
         public async Task<IEnumerable<ScheduledServiceListItem>> GetAllScheduledServicesAsync()
         {
             // need to add a user reference to scheduled services so that we can only pull those relevant to the user
-            var scheduledServiceQuery = _context.ScheduledServices.Where(o => o.OwnerId == _userId)
+            var scheduledServiceQuery = _context.ScheduledServices
+                .Include(s => s.ServiceItem)
+                .Where(o => o.OwnerId == _userId)
                 .Select(entity => new ScheduledServiceListItem
             {
                 Id = entity.Id,
                 ServiceItemId = entity.ServiceItemId,
                 LastServiceDate = entity.LastServiceDate,
                 NextServiceDate = entity.NextServiceDate,
-                ScheduledServiceDate = entity.ScheduledServiceDate
+                ScheduledServiceDate = entity.ScheduledServiceDate,
+                ServiceName = entity.ServiceItem.ServiceName
             });
 
             return await scheduledServiceQuery.ToListAsync();
@@ -65,7 +68,11 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
 
         public async Task<ScheduledServiceDetail> GetScheduledServiceByIdAsync(int scheduledServiceId)
         {
-            var scheduledServiceEntity = await _context.ScheduledServices.FirstOrDefaultAsync(s => s.Id == scheduledServiceId && s.OwnerId == _userId);
+            var scheduledServiceEntity = await _context.ScheduledServices
+                .Include(i => i.ServiceItem)
+                .Include(h => h.HomeInfo)
+                .Include(p => p.ServiceProviderInfo)
+                .FirstOrDefaultAsync(s => s.Id == scheduledServiceId && s.OwnerId == _userId);
 
             if (scheduledServiceEntity is null)
                 return null;
@@ -80,7 +87,10 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
                 ServiceCompleted = scheduledServiceEntity.ServiceCompleted,
                 ServiceProviderId = scheduledServiceEntity.ServiceProviderId,
                 ServiceCost = scheduledServiceEntity.ServiceCost,
-                ServiceRating = scheduledServiceEntity.ServiceRating
+                ServiceRating = scheduledServiceEntity.ServiceRating,
+                ServiceName = scheduledServiceEntity.ServiceItem.ServiceName,
+                HomeName = scheduledServiceEntity.HomeInfo.HomeName,
+                ServiceProviderName = scheduledServiceEntity.ServiceProviderInfo.ServiceProviderName
             };
 
             return detail;

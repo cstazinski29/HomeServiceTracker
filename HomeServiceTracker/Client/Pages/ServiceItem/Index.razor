@@ -6,7 +6,7 @@
 @page "/ServiceItem/Index"
 
 <h3>Service Items</h3>
-<a href="/serviceItem/create">Create a Service Item</a>
+<a href="/serviceItem/create" class="btn btn-success btn-block">Create a Service Item</a>
 
 @if (serviceItem == null)
 {
@@ -14,7 +14,7 @@
 }
 else
 {
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Id</th>
@@ -31,9 +31,9 @@ else
                     <td>@service.ServiceName</td>
                     <td>@service.ServiceFrequency</td>
                     <td>
-                        <a href=@($"serviceItem/{service.Id}")>Details</a>
-                        <a href=@($"serviceItem/edit/{service.Id}")>Edit</a>
-                        <a href=@($"serviceItem/delete/{service.Id}")>Delete</a>
+                        <a href=@($"serviceItem/{service.Id}") class="btn btn-outline-primary">Details</a>
+                        <a href=@($"serviceItem/edit/{service.Id}") class="btn btn-outline-secondary">Edit</a>
+                        @*<a href=@($"serviceItem/delete/{service.Id}")>Delete</a>*@
                     </td>
                 </tr>
             }

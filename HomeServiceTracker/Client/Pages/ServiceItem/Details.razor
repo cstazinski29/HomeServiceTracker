@@ -4,7 +4,8 @@
 @attribute [Authorize]
 @page "/serviceItem/{serviceItemId:int}"
 
-<h3>Service Item #@serviceItemId</h3>
+<h3>Service Item</h3>
+@*<h3>@ServiceItem.ServiceName</h3>*@
 
 @if (ServiceItem == null)
 {
@@ -15,12 +16,12 @@ else
     <div class="container">
         <div class="card">
             <div class="card-header d-flex justify-content-between">
-                <span>Service Item #@serviceItemId</span>
+                <span>Service Item Id #@serviceItemId</span>
             </div>
             <div class="card-body">
-                <h4 class="card-title">@ServiceItem.ServiceName</h4>
-                <p class="card-text">@ServiceItem.ServiceDescription</p>
-                <p class="card-text">@ServiceItem.ServiceFrequency</p>
+                <p class="card-text"><span class="fw-bold">Service Name: </span>@ServiceItem.ServiceName</p>
+                <p class="card-text"><span class="fw-bold">Service Description: </span>@ServiceItem.ServiceDescription</p>
+                <p class="card-text"><span class="fw-bold">Service Frequency: </span>@ServiceItem.ServiceFrequency</p>
                 @*add more fields*@
             </div>
             <div class="card-footer text-muted d-flex justify-content-between">
@@ -32,12 +33,14 @@ else
             </div>
         </div>
         <div class="d-flex justify-content-center mt-3">
-            <div class="text-center justify-content-between w-25">
-                <a href=@($"serviceItem/edit/{serviceItemId}") class="btn btn-outline-primary">Edit</a>
-                <a href=@($"serviceItem/delete/{serviceItemId}") class="btn btn-outline-danger">Delete</a>
+            <div class="text-center justify-content-between">
+                <a href=@($"serviceItem/edit/{serviceItemId}") class="btn btn-outline-secondary">Edit</a>
+                <a href="/serviceItem/index" class="btn btn-outline-primary">Back to Index</a>
+                @*<a href=@($"serviceItem/delete/{serviceItemId}") class="btn btn-outline-danger">Delete</a>*@
 
+                @*<hr />
+                <a href="/serviceItem/index">Back to Service Item Index</a>*@
                 <hr />
-                <a href="/serviceItem/index">Back to Service Item Index</a>
             </div>
         </div>
     </div>
