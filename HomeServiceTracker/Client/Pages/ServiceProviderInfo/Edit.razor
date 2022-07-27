@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Authorization
 @inject NavigationManager navigation
 @inject HttpClient http
+@inject IJSRuntime js
 @attribute [Authorize]
 
 @page "/serviceProviderInfo/edit/{serviceProviderInfoId:int}"
@@ -22,8 +23,9 @@
         <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
         <div class="d-flex justify-content-end mt-3">
             <div class="text-center justify-content-between">
-                <a href=@($"serviceProviderInfo/delete/{serviceProviderInfoId}") class="btn btn-outline-danger">Delete</a>
+                @*<a href=@($"serviceProviderInfo/delete/{serviceProviderInfoId}") class="btn btn-outline-danger">Delete</a>*@
                 <a href="/serviceProviderInfo/index" class="btn btn-outline-primary">Back to Index</a>
+                <button class="btn btn-danger" @onclick="@(()=> Delete(model.Id))">Delete</button>
             </div>
         </div>
         <DataAnnotationsValidator />
@@ -53,6 +55,28 @@
         else
         {
             errorMessage = "Could not update your service provider right now. Please try again later.";
+        }
+    }
+
+    private async Task Delete(int serviceProviderInfoId)
+    {
+        if (await js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {model.ServiceProviderName}?"))
+        {
+            // call Delete request on API
+            var deleteRes = await http.DeleteAsync($"/api/serviceProviderInfo/{serviceProviderInfoId}");
+
+            // check to make sure call was a success
+            // if successful, navigate back to the Index.razor component
+            if (deleteRes.IsSuccessStatusCode)
+            {
+                navigation.NavigateTo("/serviceProviderInfo/Index");
+            }
+
+            // if not successful, give user an error message
+            else
+            {
+                errorMessage = "Failed to delete your service provider.";
+            }
         }
     }
 }
