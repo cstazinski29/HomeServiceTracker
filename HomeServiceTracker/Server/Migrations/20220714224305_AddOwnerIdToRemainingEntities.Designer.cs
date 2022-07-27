@@ -4,6 +4,7 @@ using HomeServiceTracker.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeServiceTracker.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220714224305_AddOwnerIdToRemainingEntities")]
+    partial class AddOwnerIdToRemainingEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,7 +283,6 @@ namespace HomeServiceTracker.Server.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("ScheduledServiceDate")
-                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("ServiceCompleted")
@@ -300,12 +301,6 @@ namespace HomeServiceTracker.Server.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HomeId");
-
-                    b.HasIndex("ServiceItemId");
-
-                    b.HasIndex("ServiceProviderId");
 
                     b.ToTable("ScheduledServices");
                 });
@@ -499,33 +494,6 @@ namespace HomeServiceTracker.Server.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("HomeServiceTracker.Server.Models.ScheduledService", b =>
-                {
-                    b.HasOne("HomeServiceTracker.Server.Models.HomeInfo", "HomeInfo")
-                        .WithMany()
-                        .HasForeignKey("HomeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HomeServiceTracker.Server.Models.ServiceItem", "ServiceItem")
-                        .WithMany()
-                        .HasForeignKey("ServiceItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HomeServiceTracker.Server.Models.ServiceProviderInfo", "ServiceProviderInfo")
-                        .WithMany()
-                        .HasForeignKey("ServiceProviderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("HomeInfo");
-
-                    b.Navigation("ServiceItem");
-
-                    b.Navigation("ServiceProviderInfo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

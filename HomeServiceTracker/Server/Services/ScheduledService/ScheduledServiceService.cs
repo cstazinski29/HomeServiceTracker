@@ -1,6 +1,7 @@
 ﻿using HomeServiceTracker.Server.Data;
 using HomeServiceTracker.Shared.Models.ScheduledService;
 using Microsoft.EntityFrameworkCore;
+using System.Web.Mvc;
 
 namespace HomeServiceTracker.Server.Services.ScheduledService
 {
@@ -12,10 +13,19 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             _context = context;
         }
 
+        private Guid _userId;
+        public void SetUserId(Guid userId) => _userId = userId;
+
         public async Task<bool> CreateScheduledServiceAsync(ScheduledServiceCreate model)
         {
             if (model == null)
                 return false;
+
+            //IEnumerable<SelectListItem> serviceItemOptions = await _context.ServiceItems.Select(s => new SelectListItem()
+            //{
+            //    Text = s.ServiceName,
+            //    Value = s.Id.ToString()
+            //}).ToListAsync();
 
             var scheduledServiceEntity = new HomeServiceTracker.Server.Models.ScheduledService
             {
@@ -28,8 +38,10 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
                 ServiceCompleted = model.ServiceCompleted,
                 ServiceProviderId = model.ServiceProviderId,
                 ServiceCost = model.ServiceCost,
-                ServiceRating = model.ServiceRating
+                ServiceRating = model.ServiceRating,
+                OwnerId = _userId
             };
+
             _context.ScheduledServices.Add(scheduledServiceEntity);
             var numberOfChanges = await _context.SaveChangesAsync();
             return numberOfChanges == 1;
@@ -38,13 +50,17 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
         public async Task<IEnumerable<ScheduledServiceListItem>> GetAllScheduledServicesAsync()
         {
             // need to add a user reference to scheduled services so that we can only pull those relevant to the user
-            var scheduledServiceQuery = _context.ScheduledServices.Select(entity => new ScheduledServiceListItem
+            var scheduledServiceQuery = _context.ScheduledServices
+                .Include(s => s.ServiceItem)
+                .Where(o => o.OwnerId == _userId)
+                .Select(entity => new ScheduledServiceListItem
             {
                 Id = entity.Id,
                 ServiceItemId = entity.ServiceItemId,
                 LastServiceDate = entity.LastServiceDate,
                 NextServiceDate = entity.NextServiceDate,
-                ScheduledServiceDate = entity.ScheduledServiceDate
+                ScheduledServiceDate = entity.ScheduledServiceDate,
+                ServiceName = entity.ServiceItem.ServiceName
             });
 
             return await scheduledServiceQuery.ToListAsync();
@@ -52,7 +68,11 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
 
         public async Task<ScheduledServiceDetail> GetScheduledServiceByIdAsync(int scheduledServiceId)
         {
-            var scheduledServiceEntity = await _context.ScheduledServices.FirstOrDefaultAsync(s => s.Id == scheduledServiceId);
+            var scheduledServiceEntity = await _context.ScheduledServices
+                .Include(i => i.ServiceItem)
+                .Include(h => h.HomeInfo)
+                .Include(p => p.ServiceProviderInfo)
+                .FirstOrDefaultAsync(s => s.Id == scheduledServiceId && s.OwnerId == _userId);
 
             if (scheduledServiceEntity is null)
                 return null;
@@ -67,7 +87,10 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
                 ServiceCompleted = scheduledServiceEntity.ServiceCompleted,
                 ServiceProviderId = scheduledServiceEntity.ServiceProviderId,
                 ServiceCost = scheduledServiceEntity.ServiceCost,
-                ServiceRating = scheduledServiceEntity.ServiceRating
+                ServiceRating = scheduledServiceEntity.ServiceRating,
+                ServiceName = scheduledServiceEntity.ServiceItem.ServiceName,
+                HomeName = scheduledServiceEntity.HomeInfo.HomeName,
+                ServiceProviderName = scheduledServiceEntity.ServiceProviderInfo.ServiceProviderName
             };
 
             return detail;
@@ -79,7 +102,7 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             var entity = await _context.ScheduledServices.FindAsync(model.Id);
 
             // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE
-            //if (entity?.PrimaryHomeownerId != _userId) return false;
+            if (entity?.OwnerId != _userId) return false;
 
             entity.ServiceItemId = model.ServiceItemId;
             entity.HomeId = model.HomeId;
@@ -97,7 +120,7 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             var entity = await _context.ScheduledServices.FindAsync(scheduledServiceId);
 
             // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE ITEM
-            //if (entity?.PrimaryHomeownerId != _userId) return false;
+            if (entity?.OwnerId != _userId) return false;
 
             _context.ScheduledServices.Remove(entity);
             return await _context.SaveChangesAsync() == 1;

@@ -4,7 +4,8 @@
 @attribute [Authorize]
 @page "/homeInfo/{homeId:int}"
 
-<h3>Home Info #@homeId</h3>
+@*<h3>@homeInfo.HomeName</h3>*@
+<h3>Home Info</h3>
 
 @if (homeInfo == null)
 {
@@ -15,14 +16,15 @@ else
     <div class="container">
         <div class="card">
             <div class="card-header d-flex justify-content-between">
-                <span>Home #@homeInfo.Id</span>
+                <span>Home Id #@homeInfo.Id</span>
             </div>
             <div class="card-body">
-                <h4 class="card-title">@homeInfo.HomeName</h4>
-                <p class="card-text">@homeInfo.BuildYear</p>
-                <p class="card-text">@homeInfo.SquareFootage</p>
-                <p class="card-text">@homeInfo.Beds</p>
-                <p class="card-text">@homeInfo.Baths</p>
+                @*<h4 class="card-title"><span class="fw-bold">Home Name: </span>@homeInfo.HomeName</h4>*@
+                <p class="card-text"><span class="fw-bold">Home Name: </span>@homeInfo.HomeName</p>
+                <p class="card-text"><span class="fw-bold">Build Year: </span>@homeInfo.BuildYear</p>
+                <p class="card-text"><span class="fw-bold">Square Feet: </span>@homeInfo.SquareFootage</p>
+                <p class="card-text"><span class="fw-bold">Beds / Baths: </span>@homeInfo.Beds / @homeInfo.Baths</p>
+                @*<p class="card-text">@homeInfo.Baths</p>*@
             </div>
             <div class="card-footer text-muted d-flex justify-content-between">
                 <span class="text-left">Created: [insert created date]</span>
@@ -33,12 +35,13 @@ else
             </div>
         </div>
         <div class="d-flex justify-content-center mt-3">
-            <div class="text-center justify-content-between w-25">
-                <a href=@($"homeInfo/edit/{homeId}") class="btn btn-outline-primary">Edit</a>
-                <a href=@($"homeInfo/delete/{homeId}") class="btn btn-outline-danger">Delete</a>
+            <div class="text-center justify-content-between">
+                <a href=@($"homeInfo/edit/{homeId}") class="btn btn-outline-secondary">Edit</a>
+                <a href="/homeInfo/index" class="btn btn-outline-primary">Back to Index</a>
+@*                <a href=@($"homeInfo/delete/{homeId}") class="btn btn-outline-danger">Delete</a>*@
 
-                <hr />
-                <a href="/homeInfo/index">Back to Home Index</a>
+@*                <hr />
+                <a href="/homeInfo/index">Back to Index</a>*@
             </div>
         </div>
     </div>

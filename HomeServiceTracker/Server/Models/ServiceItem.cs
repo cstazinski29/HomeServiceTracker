@@ -12,5 +12,6 @@ namespace HomeServiceTracker.Server.Models
         public string ServiceDescription { get; set; }
         [Required]
         public string ServiceFrequency { get; set; }
+        public Guid OwnerId { get; set; }
     }
 }

@@ -18,15 +18,15 @@ else
                 <span>Service Item #@scheduledServiceId</span>
             </div>
             <div class="card-body">
-                <h4 class="card-title">@ScheduledService.ServiceItemId</h4>
-                <p class="card-text">@ScheduledService.HomeId</p>
-                <p class="card-text">@ScheduledService.LastServiceDate</p>
-                <p class="card-text">@ScheduledService.NextServiceDate</p>
-                <p class="card-text">@ScheduledService.ScheduledServiceDate</p>
-                <p class="card-text">@ScheduledService.ServiceCompleted</p>
-                <p class="card-text">@ScheduledService.ServiceProviderId</p>
-                <p class="card-text">@ScheduledService.ServiceCost</p>
-                <p class="card-text">@ScheduledService.ServiceRating</p>
+                <p class="card-text"><span class="fw-bold">Service Name: </span>@ScheduledService.ServiceName</p>
+                <p class="card-text"><span class="fw-bold">Home Name: </span>@ScheduledService.HomeName</p>
+                <p class="card-text"><span class="fw-bold">Scheduled Service Date: </span>@ScheduledService.ScheduledServiceDate.GetValueOrDefault().ToShortDateString()</p>
+                <p class="card-text"><span class="fw-bold">Last Service Date: </span>@ScheduledService.LastServiceDate.GetValueOrDefault().ToShortDateString()</p>
+                <p class="card-text"><span class="fw-bold">Next Service Date: </span>@ScheduledService.NextServiceDate.GetValueOrDefault().ToShortDateString()</p>
+                <p class="card-text"><span class="fw-bold">Service Completed? </span>@ScheduledService.ServiceCompleted</p>
+                <p class="card-text"><span class="fw-bold">Service Provider Name: </span>@ScheduledService.ServiceProviderName</p>
+                <p class="card-text"><span class="fw-bold">Service Cost: </span>@ScheduledService.ServiceCost</p>
+                <p class="card-text"><span class="fw-bold">Service Rating: </span>@ScheduledService.ServiceRating</p>
                 @*add more fields*@
             </div>
             <div class="card-footer text-muted d-flex justify-content-between">
@@ -38,12 +38,14 @@ else
             </div>
         </div>
         <div class="d-flex justify-content-center mt-3">
-            <div class="text-center justify-content-between w-25">
-                <a href=@($"scheduledService/edit/{scheduledServiceId}") class="btn btn-outline-primary">Edit</a>
-                <a href=@($"scheduledService/delete/{scheduledServiceId}") class="btn btn-outline-danger">Delete</a>
+            <div class="text-center justify-content-between">
+                <a href=@($"scheduledService/edit/{scheduledServiceId}") class="btn btn-outline-secondary">Edit</a>
+                <a href="/scheduledService/index" class="btn btn-outline-primary">Back to Index</a>
+                @*<a href=@($"scheduledService/delete/{scheduledServiceId}") class="btn btn-outline-danger">Delete</a>*@
 
+@*                <hr />
+                <a href="/scheduledService/index">Back to Service Item Index</a>*@
                 <hr />
-                <a href="/scheduledService/index">Back to Service Item Index</a>
             </div>
         </div>
     </div>
