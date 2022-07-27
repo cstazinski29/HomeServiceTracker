@@ -56,10 +56,19 @@
             <label>Scheduled Service Date</label>
             <InputDate class="form-control" @bind-Value="model.ScheduledServiceDate" />
         </div>
-        <div class="form-group">
+@*        <div class="form-group">
             <label>Service Completed</label>
-            <InputCheckbox class="form-control" @bind-Value="model.ServiceCompleted" />
+            <InputCheckbox class="form-control form-check-input" @bind-Value="model.ServiceCompleted" />
+        </div>*@
+        <div class="form-group">
+            <div class="form-check">
+                <InputCheckbox class="form-check-input" id="flexCheckDefault" @bind-Value="model.ServiceCompleted" />
+                <label class="form-check-label" for="flexCheckDefault">
+                    Service Completed
+                </label>
+            </div>
         </div>
+
         <div class="form-group">
             <label>Service Provider</label>
             @*<InputNumber class="form-control" @bind-Value="model.ServiceProviderId" />*@
