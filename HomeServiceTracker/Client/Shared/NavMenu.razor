@@ -11,12 +11,8 @@
         </button>
 
         <div class="collapse navbar-collapse @NavMenuCssClass" id="navbarCollapse" @onclick="ToggleNavMenu">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-@*                <li class="nav-item">
-                    <NavLink class="nav-link text-dark" href="" Match="NavLinkMatch.All">
-                        <span class="oi oi-star" aria-hidden="true"></span> Home
-                    </NavLink>
-                </li>*@
+            <ul class="navbar-nav me-auto my-auto">
+                <li></li>
                 <li class="nav-item">
                     <NavLink class="nav-link" href="homeInfo/Index">
                         <span class="oi oi-home" aria-hidden="true"></span> Homes
@@ -24,11 +20,10 @@
                 </li>
                 <li class="nav-item">
                     <NavLink class="nav-link" href="serviceItem/Index">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Service Items
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Services
                     </NavLink>
                 </li>
                 <li class="nav-item">
-
                     <NavLink class="nav-link" href="scheduledService/Index">
                         <span class="oi oi-calendar" aria-hidden="true"></span> Scheduled Services
                     </NavLink>
@@ -40,6 +35,7 @@
                 </li>
             </ul>
         </div>
+        <LoginDisplay />
     </div>
 </nav>
 
