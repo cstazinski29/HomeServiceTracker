@@ -47,14 +47,16 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             var scheduledServiceQuery = _context.ScheduledServices
                 .Include(s => s.ServiceItem)
                 .Where(o => o.OwnerId == _userId)
+                .OrderBy(t => t.ScheduledServiceDate)
                 .Select(entity => new ScheduledServiceListItem
             {
                 Id = entity.Id,
                 ServiceItemId = entity.ServiceItemId,
-                LastServiceDate = entity.LastServiceDate,
-                NextServiceDate = entity.NextServiceDate,
+                //LastServiceDate = entity.LastServiceDate,
+                //NextServiceDate = entity.NextServiceDate,
                 ScheduledServiceDate = entity.ScheduledServiceDate,
-                ServiceName = entity.ServiceItem.ServiceName
+                ServiceName = entity.ServiceItem.ServiceName,
+                ServiceCompleted = entity.ServiceCompleted
             });
 
             return await scheduledServiceQuery.ToListAsync();
@@ -125,14 +127,16 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             var scheduledServiceQuery = _context.ScheduledServices
                 .Include(s => s.ServiceItem)
                 .Where(i => i.OwnerId == _userId && i.HomeId == homeId)
+                .OrderBy(t => t.ScheduledServiceDate)
                 .Select(entity => new ScheduledServiceListItem
                 {
                     Id = entity.Id,
                     ServiceItemId = entity.ServiceItemId,
-                    LastServiceDate = entity.LastServiceDate,
-                    NextServiceDate = entity.NextServiceDate,
+                    //LastServiceDate = entity.LastServiceDate,
+                    //NextServiceDate = entity.NextServiceDate,
                     ScheduledServiceDate = entity.ScheduledServiceDate,
-                    ServiceName = entity.ServiceItem.ServiceName
+                    ServiceName = entity.ServiceItem.ServiceName,
+                    ServiceCompleted = entity.ServiceCompleted
                 });
 
             return await scheduledServiceQuery.ToListAsync();
