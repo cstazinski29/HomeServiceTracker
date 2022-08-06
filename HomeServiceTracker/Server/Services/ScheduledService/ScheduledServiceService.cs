@@ -21,12 +21,6 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             if (model == null)
                 return false;
 
-            //IEnumerable<SelectListItem> serviceItemOptions = await _context.ServiceItems.Select(s => new SelectListItem()
-            //{
-            //    Text = s.ServiceName,
-            //    Value = s.Id.ToString()
-            //}).ToListAsync();
-
             var scheduledServiceEntity = new HomeServiceTracker.Server.Models.ScheduledService
             {
                 // Pretty sure I need to cut this down & make some of the fields auto-populate based on the user & other references (such as latest date)
@@ -101,7 +95,6 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             if (model == null) return false;
             var entity = await _context.ScheduledServices.FindAsync(model.Id);
 
-            // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE
             if (entity?.OwnerId != _userId) return false;
 
             entity.ServiceItemId = model.ServiceItemId;
@@ -119,12 +112,30 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
         {
             var entity = await _context.ScheduledServices.FindAsync(scheduledServiceId);
 
-            // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE ITEM
             if (entity?.OwnerId != _userId) return false;
 
             _context.ScheduledServices.Remove(entity);
             return await _context.SaveChangesAsync() == 1;
         }
 
+        public async Task<IEnumerable<ScheduledServiceListItem>> GetAllScheduledServiceByHomeIdAsync(int homeId)
+        {
+
+
+            var scheduledServiceQuery = _context.ScheduledServices
+                .Include(s => s.ServiceItem)
+                .Where(i => i.OwnerId == _userId && i.HomeId == homeId)
+                .Select(entity => new ScheduledServiceListItem
+                {
+                    Id = entity.Id,
+                    ServiceItemId = entity.ServiceItemId,
+                    LastServiceDate = entity.LastServiceDate,
+                    NextServiceDate = entity.NextServiceDate,
+                    ScheduledServiceDate = entity.ScheduledServiceDate,
+                    ServiceName = entity.ServiceItem.ServiceName
+                });
+
+            return await scheduledServiceQuery.ToListAsync();
+        }
     }
 }
