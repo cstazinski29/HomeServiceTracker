@@ -52,7 +52,7 @@ else
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Id</th>
+                        @*<th>Id</th>*@
                         <th>Service Item</th>
                         @*                <th>Last Service Date</th>
                     <th>Next Service Date</th>*@
@@ -65,11 +65,11 @@ else
                     @foreach (ScheduledServiceListItem service in scheduledService)
                     {
                         <tr>
-                            <td>@service.Id</td>
+                            @*<td>@service.Id</td>*@
+                            <td>@service.ScheduledServiceDate.GetValueOrDefault().ToShortDateString()</td>
                             <td>@service.ServiceName</td>
                             @*                    <td>@service.LastServiceDate.GetValueOrDefault().ToShortDateString()</td>
                     <td>@service.NextServiceDate.GetValueOrDefault().ToShortDateString()</td>*@
-                            <td>@service.ScheduledServiceDate.GetValueOrDefault().ToShortDateString()</td>
                             <td>@service.ServiceCompleted</td>
                             <td>
                                 <a href=@($"scheduledService/{service.Id}") class="btn btn-outline-primary">Details</a>

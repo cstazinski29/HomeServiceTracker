@@ -47,6 +47,7 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             var scheduledServiceQuery = _context.ScheduledServices
                 .Include(s => s.ServiceItem)
                 .Where(o => o.OwnerId == _userId)
+                .OrderBy(t => t.ScheduledServiceDate)
                 .Select(entity => new ScheduledServiceListItem
             {
                 Id = entity.Id,
@@ -126,6 +127,7 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             var scheduledServiceQuery = _context.ScheduledServices
                 .Include(s => s.ServiceItem)
                 .Where(i => i.OwnerId == _userId && i.HomeId == homeId)
+                .OrderBy(t => t.ScheduledServiceDate)
                 .Select(entity => new ScheduledServiceListItem
                 {
                     Id = entity.Id,
