@@ -1,4 +1,5 @@
 ﻿using HomeServiceTracker.Server.Services.HomeInfo;
+using HomeServiceTracker.Server.Services.SeedData;
 using HomeServiceTracker.Shared.Models.HomeInfo;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +13,11 @@ namespace HomeServiceTracker.Server.Controllers
     public class HomeInfoController : Controller
     {
         private readonly IHomeInfoService _homeInfoService;
-        public HomeInfoController(IHomeInfoService homeInfoService)
+        private readonly ISeedDataService _seed;
+        public HomeInfoController(IHomeInfoService homeInfoService, ISeedDataService seed)
         {
             _homeInfoService = homeInfoService;
+            _seed = seed;
         }
 
         private Guid GetUserId()
@@ -37,6 +40,8 @@ namespace HomeServiceTracker.Server.Controllers
         [HttpGet]
         public async Task<List<HomeInfoListItem>> Index()
         {
+            //await _seed.SeedHomeInfoAsync();
+
             if (!SetUserIdInService()) return new List<HomeInfoListItem>();
             var homeInfo = await _homeInfoService.GetAllHomeInfoAsync();
             return homeInfo.ToList();
