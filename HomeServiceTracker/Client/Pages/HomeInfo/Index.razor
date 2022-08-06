@@ -1,6 +1,5 @@
 ﻿@using HomeServiceTracker.Shared.Models.HomeInfo
 @using Microsoft.AspNetCore.Authorization
-
 @inject HttpClient http
 @*commented out the authorization below for testing purposes, as I have not worked out the authorization yet*@
 @attribute [Authorize]
@@ -72,7 +71,6 @@ else
     // can be a List or an IEnumerable? The others are lists currently; not sure which is better for this
     // private List<HomeInfoListItem> homeInfo;
     private IEnumerable<HomeInfoListItem> homeInfo;
-
 //Not sure what this does here below...
 //This code causes an "unhandled error" message to show; commenting it out gets rid of that banner, and does not seem to impact the app function
     protected override async Task OnInitializedAsync()
