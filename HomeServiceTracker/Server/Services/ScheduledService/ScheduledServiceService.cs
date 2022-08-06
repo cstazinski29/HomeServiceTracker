@@ -51,10 +51,11 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             {
                 Id = entity.Id,
                 ServiceItemId = entity.ServiceItemId,
-                LastServiceDate = entity.LastServiceDate,
-                NextServiceDate = entity.NextServiceDate,
+                //LastServiceDate = entity.LastServiceDate,
+                //NextServiceDate = entity.NextServiceDate,
                 ScheduledServiceDate = entity.ScheduledServiceDate,
-                ServiceName = entity.ServiceItem.ServiceName
+                ServiceName = entity.ServiceItem.ServiceName,
+                ServiceCompleted = entity.ServiceCompleted
             });
 
             return await scheduledServiceQuery.ToListAsync();
@@ -129,10 +130,11 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
                 {
                     Id = entity.Id,
                     ServiceItemId = entity.ServiceItemId,
-                    LastServiceDate = entity.LastServiceDate,
-                    NextServiceDate = entity.NextServiceDate,
+                    //LastServiceDate = entity.LastServiceDate,
+                    //NextServiceDate = entity.NextServiceDate,
                     ScheduledServiceDate = entity.ScheduledServiceDate,
-                    ServiceName = entity.ServiceItem.ServiceName
+                    ServiceName = entity.ServiceItem.ServiceName,
+                    ServiceCompleted = entity.ServiceCompleted
                 });
 
             return await scheduledServiceQuery.ToListAsync();

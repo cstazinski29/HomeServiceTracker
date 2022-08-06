@@ -57,6 +57,7 @@ else
                         @*                <th>Last Service Date</th>
                     <th>Next Service Date</th>*@
                         <th>Scheduled Service Date</th>
+                        <th>Service Completed?</th>
                         <th>Options</th>
                     </tr>
                 </thead>
@@ -69,6 +70,7 @@ else
                             @*                    <td>@service.LastServiceDate.GetValueOrDefault().ToShortDateString()</td>
                     <td>@service.NextServiceDate.GetValueOrDefault().ToShortDateString()</td>*@
                             <td>@service.ScheduledServiceDate.GetValueOrDefault().ToShortDateString()</td>
+                            <td>@service.ServiceCompleted</td>
                             <td>
                                 <a href=@($"scheduledService/{service.Id}") class="btn btn-outline-primary">Details</a>
                             </td>
