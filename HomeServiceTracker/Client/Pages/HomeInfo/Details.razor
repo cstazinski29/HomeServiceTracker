@@ -29,51 +29,55 @@ else
             </div>
             <div class="card-footer text-muted d-flex justify-content-between">
                 <span class="text-left">Created: [insert created date]</span>
-@*                @if (HomeInfo.ModifiedUtc !=null)
-                {
-                    <span class="text-right">Modified: [insert modified date]</span>
-                }*@
+                @*                @if (HomeInfo.ModifiedUtc !=null)
+            {
+            <span class="text-right">Modified: [insert modified date]</span>
+            }*@
             </div>
         </div>
+
         <div class="d-flex justify-content-center mt-3">
             <div class="text-center justify-content-between">
                 <a href=@($"homeInfo/edit/{homeId}") class="btn btn-outline-secondary">Edit</a>
                 <a href="/homeInfo/index" class="btn btn-outline-primary">Back to Index</a>
-@*                <a href=@($"homeInfo/delete/{homeId}") class="btn btn-outline-danger">Delete</a>*@
+                @*                <a href=@($"homeInfo/delete/{homeId}") class="btn btn-outline-danger">Delete</a>*@
 
-@*                <hr />
-                <a href="/homeInfo/index">Back to Index</a>*@
+                @*                <hr />
+            <a href="/homeInfo/index">Back to Index</a>*@
             </div>
         </div>
-    </div>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Service Item</th>
-@*                <th>Last Service Date</th>
-                <th>Next Service Date</th>*@
-                <th>Scheduled Service Date</th>
-                <th>Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (ScheduledServiceListItem service in scheduledService)
-            {
-                <tr>
-                    <td>@service.Id</td>
-                    <td>@service.ServiceName</td>
-@*                    <td>@service.LastServiceDate.GetValueOrDefault().ToShortDateString()</td>
+        <div>
+            <h5>Currently Scheduled Services</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Service Item</th>
+                        @*                <th>Last Service Date</th>
+                    <th>Next Service Date</th>*@
+                        <th>Scheduled Service Date</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ScheduledServiceListItem service in scheduledService)
+                    {
+                        <tr>
+                            <td>@service.Id</td>
+                            <td>@service.ServiceName</td>
+                            @*                    <td>@service.LastServiceDate.GetValueOrDefault().ToShortDateString()</td>
                     <td>@service.NextServiceDate.GetValueOrDefault().ToShortDateString()</td>*@
-                    <td>@service.ScheduledServiceDate.GetValueOrDefault().ToShortDateString()</td>
-                    <td>
-                        <a href=@($"scheduledService/{service.Id}") class="btn btn-outline-primary">Details</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                            <td>@service.ScheduledServiceDate.GetValueOrDefault().ToShortDateString()</td>
+                            <td>
+                                <a href=@($"scheduledService/{service.Id}") class="btn btn-outline-primary">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
 
 @code {
@@ -85,6 +89,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         homeInfo = await http.GetFromJsonAsync<HomeInfoDetail>($"/api/homeInfo/{homeId}");
-        scheduledService = await http.GetFromJsonAsync<List<ScheduledServiceListItem>>($"/api/scheduledService/{homeId}");
+        scheduledService = await http.GetFromJsonAsync<List<ScheduledServiceListItem>>($"/api/scheduledService/home/{homeId}");
     }
 }

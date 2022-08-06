@@ -98,7 +98,7 @@ namespace HomeServiceTracker.Server.Controllers
             return Ok();
         }
 
-        [HttpGet("{homeId}")]
+        [HttpGet("home/{homeId}")]
         public async Task<List<ScheduledServiceListItem>> ScheduledServiceByHome(int homeId)
         {
             if (!SetUserIdInService()) return new List<ScheduledServiceListItem>();
