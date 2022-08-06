@@ -1,4 +1,5 @@
 ﻿@using HomeServiceTracker.Shared.Models.HomeInfo
+@using HomeServiceTracker.Shared.Models.ScheduledService
 @using Microsoft.AspNetCore.Authorization
 @inject HttpClient http
 @attribute [Authorize]
@@ -45,14 +46,45 @@ else
             </div>
         </div>
     </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Service Item</th>
+@*                <th>Last Service Date</th>
+                <th>Next Service Date</th>*@
+                <th>Scheduled Service Date</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ScheduledServiceListItem service in scheduledService)
+            {
+                <tr>
+                    <td>@service.Id</td>
+                    <td>@service.ServiceName</td>
+@*                    <td>@service.LastServiceDate.GetValueOrDefault().ToShortDateString()</td>
+                    <td>@service.NextServiceDate.GetValueOrDefault().ToShortDateString()</td>*@
+                    <td>@service.ScheduledServiceDate.GetValueOrDefault().ToShortDateString()</td>
+                    <td>
+                        <a href=@($"scheduledService/{service.Id}") class="btn btn-outline-primary">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 @code {
     [Parameter]
     public int homeId { get; set; }
     public HomeInfoDetail homeInfo { get; set; }
+    private List<ScheduledServiceListItem> scheduledService { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         homeInfo = await http.GetFromJsonAsync<HomeInfoDetail>($"/api/homeInfo/{homeId}");
+        scheduledService = await http.GetFromJsonAsync<List<ScheduledServiceListItem>>($"/api/scheduledService/{homeId}");
     }
 }
