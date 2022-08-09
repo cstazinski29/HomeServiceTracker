@@ -13,11 +13,10 @@ namespace HomeServiceTracker.Server.Controllers
     public class HomeInfoController : Controller
     {
         private readonly IHomeInfoService _homeInfoService;
-        private readonly ISeedDataService _seed;
-        public HomeInfoController(IHomeInfoService homeInfoService, ISeedDataService seed)
+        //private readonly ISeedDataService _seed;
+        public HomeInfoController(IHomeInfoService homeInfoService)
         {
             _homeInfoService = homeInfoService;
-            _seed = seed;
         }
 
         private Guid GetUserId()

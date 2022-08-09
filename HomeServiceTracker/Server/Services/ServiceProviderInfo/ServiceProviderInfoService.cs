@@ -82,5 +82,7 @@ namespace HomeServiceTracker.Server.Services.ServiceProviderInfo
             return await _context.SaveChangesAsync() == 1;
         }
 
+        // Add GET SERVICE PROVIDER RATINGS
+
     }
 }
