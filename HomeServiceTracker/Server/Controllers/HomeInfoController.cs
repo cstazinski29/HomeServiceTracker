@@ -17,6 +17,7 @@ namespace HomeServiceTracker.Server.Controllers
         public HomeInfoController(IHomeInfoService homeInfoService)
         {
             _homeInfoService = homeInfoService;
+            //_seed = seed;
         }
 
         private Guid GetUserId()
@@ -39,9 +40,9 @@ namespace HomeServiceTracker.Server.Controllers
         [HttpGet]
         public async Task<List<HomeInfoListItem>> Index()
         {
-            //await _seed.SeedHomeInfoAsync();
 
             if (!SetUserIdInService()) return new List<HomeInfoListItem>();
+            await _homeInfoService.SeedHomeInfoAsync();
             var homeInfo = await _homeInfoService.GetAllHomeInfoAsync();
             return homeInfo.ToList();
         }
