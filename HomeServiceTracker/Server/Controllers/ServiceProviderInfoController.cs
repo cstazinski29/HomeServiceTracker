@@ -8,7 +8,6 @@ namespace HomeServiceTracker.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //public class ServiceProviderInfoController : ControllerBase
     public class ServiceProviderInfoController : Controller
     {
         private readonly IServiceProviderInfoService _serviceProviderInfoService;
@@ -37,9 +36,6 @@ namespace HomeServiceTracker.Server.Controllers
         [HttpGet]
         public async Task<List<ServiceProviderInfoListItem>> Index()
         {
-            //var serviceProviders = await _serviceProviderInfoService.GetAllServiceProviderInfosAsync();
-            //return Ok(serviceProviders);
-
             if (!SetUserIdInService()) return new List<ServiceProviderInfoListItem>();
 
             await _serviceProviderInfoService.SeedServiceProviderInfoAsync();
@@ -47,7 +43,6 @@ namespace HomeServiceTracker.Server.Controllers
             return serviceProviders.ToList();
         }
 
-        // NEED TO UPDATE SERVICE PROVIDER INFO SERVICE WITH THE GET BY ID METHOD FIRST
         [HttpGet("{id}")]
         public async Task<IActionResult> ServiceProviderInfo(int id)
         {
@@ -74,7 +69,6 @@ namespace HomeServiceTracker.Server.Controllers
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> Edit(int id, ServiceProviderInfoEdit model)
         {
-            // I think I'll need to explore this permissioning further
             if (!SetUserIdInService()) return Unauthorized();
 
             if (model == null || !ModelState.IsValid) return BadRequest();
@@ -88,7 +82,6 @@ namespace HomeServiceTracker.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            // I think I'll need to explore this permissioning further
             if (!SetUserIdInService()) return Unauthorized();
 
             var service = await _serviceProviderInfoService.GetServiceProviderInfoByIdAsync(id);

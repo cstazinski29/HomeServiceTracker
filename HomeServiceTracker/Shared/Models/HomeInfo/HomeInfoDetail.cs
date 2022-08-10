@@ -14,7 +14,6 @@ namespace HomeServiceTracker.Shared.Models.HomeInfo
         public int SquareFootage { get; set; }
         public int Beds { get; set; }
         public float Baths { get; set; }
-        // public int PrimaryHomeownerId { get; set; }
         // public DateTimeOffset CreatedUtc { get; set; }
         // public DateTimeOffset? ModifiedUtc { get; set; }
     }

@@ -8,7 +8,6 @@ namespace HomeServiceTracker.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // public class HomeInfoController : ControllerBase
     public class HomeInfoController : Controller
     {
         private readonly IHomeInfoService _homeInfoService;

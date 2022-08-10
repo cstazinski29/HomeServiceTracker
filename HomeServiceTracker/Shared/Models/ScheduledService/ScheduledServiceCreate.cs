@@ -26,6 +26,5 @@ namespace HomeServiceTracker.Shared.Models.ScheduledService
         public float ServiceCost { get; set; }
         public int ServiceRating { get; set; }
 
-        // public IEnumerable<SelectListItem> ServiceItemOptions { get; set; } = new List<SelectListItem>();
     }
 }

@@ -12,7 +12,6 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
             _context = context;
         }
 
-        // was previously a string, I changed to guid as that was what marty had in his
         private Guid _userId;
         public void SetUserId(Guid userId) => _userId = userId;
         public async Task<bool> CreateHomeInfoAsync(HomeInfoCreate model)

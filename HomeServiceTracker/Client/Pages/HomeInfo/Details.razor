@@ -40,10 +40,6 @@ else
             <div class="text-center justify-content-between">
                 <a href=@($"homeInfo/edit/{homeId}") class="btn btn-outline-secondary">Edit</a>
                 <a href="/homeInfo/index" class="btn btn-outline-primary">Back to Index</a>
-                @*                <a href=@($"homeInfo/delete/{homeId}") class="btn btn-outline-danger">Delete</a>*@
-
-                @*                <hr />
-            <a href="/homeInfo/index">Back to Index</a>*@
             </div>
         </div>
 
@@ -52,10 +48,7 @@ else
             <table class="table">
                 <thead>
                     <tr>
-                        @*<th>Id</th>*@
                         <th>Service Item</th>
-                        @*                <th>Last Service Date</th>
-                    <th>Next Service Date</th>*@
                         <th>Scheduled Service Date</th>
                         <th>Service Completed?</th>
                         <th>Options</th>
@@ -65,11 +58,8 @@ else
                     @foreach (ScheduledServiceListItem service in scheduledService)
                     {
                         <tr>
-                            @*<td>@service.Id</td>*@
                             <td>@service.ScheduledServiceDate.GetValueOrDefault().ToShortDateString()</td>
                             <td>@service.ServiceName</td>
-                            @*                    <td>@service.LastServiceDate.GetValueOrDefault().ToShortDateString()</td>
-                    <td>@service.NextServiceDate.GetValueOrDefault().ToShortDateString()</td>*@
                             <td>@service.ServiceCompleted</td>
                             <td>
                                 <a href=@($"scheduledService/{service.Id}") class="btn btn-outline-primary">Details</a>

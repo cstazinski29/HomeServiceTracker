@@ -23,7 +23,7 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
 
             var scheduledServiceEntity = new HomeServiceTracker.Server.Models.ScheduledService
             {
-                // Pretty sure I need to cut this down & make some of the fields auto-populate based on the user & other references (such as latest date)
+                // I need to cut this down & make some of the fields auto-populate based on other table references (such as latest date)
                 ServiceItemId = model.ServiceItemId,
                 HomeId = model.HomeId,
                 LastServiceDate = model.LastServiceDate,
@@ -43,7 +43,6 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
 
         public async Task<IEnumerable<ScheduledServiceListItem>> GetAllScheduledServicesAsync()
         {
-            // need to add a user reference to scheduled services so that we can only pull those relevant to the user
             var scheduledServiceQuery = _context.ScheduledServices
                 .Include(s => s.ServiceItem)
                 .Where(o => o.OwnerId == _userId)
@@ -52,8 +51,6 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
             {
                 Id = entity.Id,
                 ServiceItemId = entity.ServiceItemId,
-                //LastServiceDate = entity.LastServiceDate,
-                //NextServiceDate = entity.NextServiceDate,
                 ScheduledServiceDate = entity.ScheduledServiceDate,
                 ServiceName = entity.ServiceItem.ServiceName,
                 ServiceCompleted = entity.ServiceCompleted
@@ -132,8 +129,6 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
                 {
                     Id = entity.Id,
                     ServiceItemId = entity.ServiceItemId,
-                    //LastServiceDate = entity.LastServiceDate,
-                    //NextServiceDate = entity.NextServiceDate,
                     ScheduledServiceDate = entity.ScheduledServiceDate,
                     ServiceName = entity.ServiceItem.ServiceName,
                     ServiceCompleted = entity.ServiceCompleted

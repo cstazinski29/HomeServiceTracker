@@ -1,7 +1,6 @@
 ﻿@using HomeServiceTracker.Shared.Models.HomeInfo
 @using Microsoft.AspNetCore.Authorization
 @inject HttpClient http
-@*commented out the authorization below for testing purposes, as I have not worked out the authorization yet*@
 @attribute [Authorize]
 
 @page "/HomeInfo/Index"
@@ -15,30 +14,6 @@
 }
 else
 {
-@*    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (HomeInfoListItem home in homeInfo)
-            {
-                <tr>
-                    <td>@home.Id</td>
-                    <td>@home.HomeName</td>
-                    <td>
-                        <a href=@($"homeInfo/{home.Id}")>Details</a>
-                        <a href=@($"homeInfo/edit/{home.Id}")>Edit</a>
-                        <a href=@($"homeInfo/delete/{home.Id}")>Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-
-    </table>*@
     <div class="row row-cols-1 row-cols-md-2 g-4">
         @foreach (HomeInfoListItem home in homeInfo)
         {
@@ -54,10 +29,8 @@ else
                     <div class="card-body">
                         <h5 class="card-title">@home.HomeName</h5>
                         <p class="card-text">Build Year: @home.BuildYear</p>
-                        @*<a href="#" class="btn btn-primary">Go somewhere</a>*@
                         <a class="btn btn-outline-primary" href=@($"homeInfo/{home.Id}")>Details</a>
                         <a class="btn btn-outline-secondary" href=@($"homeInfo/edit/{home.Id}")>Edit</a>
-                        @*<a class="btn btn-primary" href=@($"homeInfo/delete/{home.Id}")>Delete</a>*@
                     </div>
                 </div>
             </div>
@@ -68,11 +41,8 @@ else
 
 
 @code {
-    // can be a List or an IEnumerable? The others are lists currently; not sure which is better for this
-    // private List<HomeInfoListItem> homeInfo;
     private IEnumerable<HomeInfoListItem> homeInfo;
-//Not sure what this does here below...
-//This code causes an "unhandled error" message to show; commenting it out gets rid of that banner, and does not seem to impact the app function
+
     protected override async Task OnInitializedAsync()
     {
         homeInfo = await http.GetFromJsonAsync<List<HomeInfoListItem>>("/api/homeInfo");
