@@ -17,7 +17,6 @@ else
     <table class="table table-striped">
         <thead>
             <tr>
-                @*<th>Id</th>*@
                 <th>Service Provider Name</th>
                 <th>Average Rating</th>
                 <th>Options</th>
@@ -27,13 +26,11 @@ else
             @foreach (ServiceProviderInfoListItem service in serviceProviderInfo)
             {
                 <tr>
-                    @*<td>@service.Id</td>*@
                     <td>@service.ServiceProviderName</td>
                     <td>@service.AverageServiceProviderRating</td>
                     <td>
                         <a href=@($"serviceProviderInfo/{service.Id}") class="btn btn-outline-primary">Details</a>
                         <a href=@($"serviceProviderInfo/edit/{service.Id}") class="btn btn-outline-secondary">Edit</a>
-                        @*<a href=@($"serviceProviderInfo/delete/{service.Id}")>Delete</a>*@
                     </td>
                 </tr>
             }

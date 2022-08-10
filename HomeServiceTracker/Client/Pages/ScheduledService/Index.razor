@@ -18,11 +18,8 @@ else
     <table class="table table-striped">
         <thead>
             <tr>
-                @*<th>Id</th>*@
                 <th>Scheduled Service Date</th>
                 <th>Service Item</th>
-@*                <th>Last Service Date</th>
-                <th>Next Service Date</th>*@
                 <th>Service Completed?</th>
                 <th>Options</th>
             </tr>
@@ -31,16 +28,12 @@ else
             @foreach (ScheduledServiceListItem service in scheduledService)
             {
                 <tr>
-                    @*<td>@service.Id</td>*@
                     <td>@service.ScheduledServiceDate.GetValueOrDefault().ToShortDateString()</td>
                     <td>@service.ServiceName</td>
-@*                    <td>@service.LastServiceDate.GetValueOrDefault().ToShortDateString()</td>
-                    <td>@service.NextServiceDate.GetValueOrDefault().ToShortDateString()</td>*@
                     <td>@service.ServiceCompleted</td>
                     <td>
                         <a href=@($"scheduledService/{service.Id}") class="btn btn-outline-primary">Details</a>
                         <a href=@($"scheduledService/edit/{service.Id}") class="btn btn-outline-secondary">Edit</a>
-                        @*<a href=@($"scheduledService/delete/{service.Id}")>Delete</a>*@
                     </td>
                 </tr>
             }
@@ -50,19 +43,9 @@ else
 
 @code {
     private List<ScheduledServiceListItem> scheduledService;
-    //private List<ServiceItemListItem> serviceItemList = new List<ServiceItemListItem>();
-
 
     protected override async Task OnInitializedAsync()
     {
         scheduledService = await http.GetFromJsonAsync<List<ScheduledServiceListItem>>("/api/scheduledService");
-        //serviceItemList = await http.GetFromJsonAsync<List<ServiceItemListItem>>("/api/serviceItem");
     }
-
-    //private string GetServiceName(int serviceItemId)
-    //{
-    //    var serviceItem = serviceItemList.Where(s => s.Id == serviceItemId);
-    //    //var serviceName = serviceItem.ServiceName
-    //    return "yes";
-    //}
 }

@@ -39,7 +39,6 @@
         <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
         <div class="d-flex justify-content-end mt-3">
             <div class="text-center justify-content-between">
-                @*<a href=@($"homeInfo/delete/{homeId}") class="btn btn-outline-danger">Delete</a>*@
                 <a href="/homeInfo/index" class="btn btn-outline-primary">Back to Index</a>
                 <button class="btn btn-danger" @onclick="@(()=> Delete(model.Id))">Delete</button>
             </div>
@@ -52,7 +51,6 @@
 @code {
     [Parameter]
     public int homeId { get; set; }
-    //private HomeInfoEdit model { get; set; }
     private HomeInfoEdit model = new();
     private string errorMessage { get; set; }
 

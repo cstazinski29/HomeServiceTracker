@@ -63,7 +63,6 @@ namespace HomeServiceTracker.Server.Services.ServiceProviderInfo
             if (model == null) return false;
             var entity = await _context.ServiceProviders.FindAsync(model.Id);
 
-            // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE PROVIDER
             if (entity?.OwnerId != _userId) return false;
 
             entity.ServiceProviderName= model.ServiceProviderName;
@@ -75,7 +74,6 @@ namespace HomeServiceTracker.Server.Services.ServiceProviderInfo
         {
             var entity = await _context.ServiceProviders.FindAsync(serviceProviderInfoId);
 
-            // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE PROVIDER
             if (entity?.OwnerId != _userId) return false;
 
             _context.ServiceProviders.Remove(entity);

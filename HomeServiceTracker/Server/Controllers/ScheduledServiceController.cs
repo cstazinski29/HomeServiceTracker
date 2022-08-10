@@ -8,7 +8,6 @@ namespace HomeServiceTracker.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //public class ScheduledServiceController : ControllerBase
     public class ScheduledServiceController : Controller
     {
         private readonly IScheduledServiceService _scheduledServiceService;
@@ -37,15 +36,11 @@ namespace HomeServiceTracker.Server.Controllers
         [HttpGet]
         public async Task<List<ScheduledServiceListItem>> Index()
         {
-            //var scheduledServices = await _scheduledServiceService.GetAllScheduledServicesAsync();
-            //return Ok(scheduledServices);
-
             if (!SetUserIdInService()) return new List<ScheduledServiceListItem>();
             var scheduledServices = await _scheduledServiceService.GetAllScheduledServicesAsync();
             return scheduledServices.ToList();
         }
 
-        // NEED TO UPDATE SCHEDULED SERVICE SERVICE WITH THE GET BY ID METHOD FIRST
         [HttpGet("{id}")]
         public async Task<IActionResult> ScheduledService(int id)
         {
@@ -72,7 +67,6 @@ namespace HomeServiceTracker.Server.Controllers
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> Edit(int id, ScheduledServiceEdit model)
         {
-            // I think I'll need to explore this permissioning further
             if (!SetUserIdInService()) return Unauthorized();
 
             if (model == null || !ModelState.IsValid) return BadRequest();
@@ -86,7 +80,6 @@ namespace HomeServiceTracker.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            // I think I'll need to explore this permissioning further
             if (!SetUserIdInService()) return Unauthorized();
 
             var service = await _scheduledServiceService.GetScheduledServiceByIdAsync(id);
