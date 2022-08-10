@@ -141,5 +141,60 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
 
             return await scheduledServiceQuery.ToListAsync();
         }
+
+        public async Task<bool> SeedScheduledServicesAsync()
+        {
+            int count = _context.ScheduledServices.Where(o => o.OwnerId == _userId).Count();
+            if (count == 0)
+            {
+                var firstScheduledService = new ScheduledServiceCreate()
+                {
+                    ServiceItemId = 1,
+                    HomeId = 1,
+                    LastServiceDate = new DateTime(2021, 10, 18),
+                    NextServiceDate = new DateTime(2022, 10, 18),
+                    ScheduledServiceDate = new DateTime(2022, 9, 27),
+                    ServiceCompleted = false,
+                    ServiceProviderId = 1,
+                    ServiceCost = 0,
+                    ServiceRating = 0,
+                };
+
+                var secondScheduledService = new ScheduledServiceCreate()
+                {
+                    ServiceItemId = 1,
+                    HomeId = 1,
+                    LastServiceDate = new DateTime(2021, 10, 18),
+                    NextServiceDate = new DateTime(2022, 10, 18),
+                    ScheduledServiceDate = new DateTime(2022, 9, 27),
+                    ServiceCompleted = false,
+                    ServiceProviderId = 1,
+                    ServiceCost = 0,
+                    ServiceRating = 0,
+                };
+
+                var thirdScheduledService = new ScheduledServiceCreate()
+                {
+                    ServiceItemId = 1,
+                    HomeId = 1,
+                    LastServiceDate = new DateTime(2021, 10, 18),
+                    NextServiceDate = new DateTime(2022, 10, 18),
+                    ScheduledServiceDate = new DateTime(2022, 9, 27),
+                    ServiceCompleted = false,
+                    ServiceProviderId = 1,
+                    ServiceCost = 0,
+                    ServiceRating = 0,
+                };
+
+                await CreateScheduledServiceAsync(firstScheduledService);
+                await CreateScheduledServiceAsync(secondScheduledService);
+                await CreateScheduledServiceAsync(thirdScheduledService);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

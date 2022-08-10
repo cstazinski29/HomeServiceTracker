@@ -11,5 +11,7 @@ namespace HomeServiceTracker.Server.Services.ScheduledService
         Task<bool> DeleteScheduledServiceAsync(int scheduledServiceId);
         Task<IEnumerable<ScheduledServiceListItem>> GetAllScheduledServiceByHomeIdAsync(int homeId);
         void SetUserId(Guid userId);
+
+        Task<bool> SeedScheduledServicesAsync();
     }
 }

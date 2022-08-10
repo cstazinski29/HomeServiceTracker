@@ -40,8 +40,8 @@ namespace HomeServiceTracker.Server.Controllers
         [HttpGet]
         public async Task<List<HomeInfoListItem>> Index()
         {
-
             if (!SetUserIdInService()) return new List<HomeInfoListItem>();
+
             await _homeInfoService.SeedHomeInfoAsync();
             var homeInfo = await _homeInfoService.GetAllHomeInfoAsync();
             return homeInfo.ToList();
