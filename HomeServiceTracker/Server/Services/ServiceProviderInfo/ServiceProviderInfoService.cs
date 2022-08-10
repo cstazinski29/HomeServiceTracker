@@ -82,5 +82,36 @@ namespace HomeServiceTracker.Server.Services.ServiceProviderInfo
             return await _context.SaveChangesAsync() == 1;
         }
 
+        public async Task<bool> SeedServiceProviderInfoAsync()
+        {
+            int count = _context.ServiceProviders.Where(o => o.OwnerId == _userId).Count();
+            if (count == 0)
+            {
+                var firstServiceProvider = new ServiceProviderInfoCreate()
+                {
+                    ServiceProviderName = "Handyman Hank"
+                };
+
+                var secondServiceProvider = new ServiceProviderInfoCreate()
+                {
+                    ServiceProviderName = "Linda's Lawn Care"
+                };
+
+                var thirdServiceProvider = new ServiceProviderInfoCreate()
+                {
+                    ServiceProviderName = "Bob the Builder"
+                };
+
+                await CreateServiceProviderInfoAsync(firstServiceProvider);
+                await CreateServiceProviderInfoAsync(secondServiceProvider);
+                await CreateServiceProviderInfoAsync(thirdServiceProvider);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }

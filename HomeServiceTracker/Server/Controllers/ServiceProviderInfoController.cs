@@ -41,6 +41,8 @@ namespace HomeServiceTracker.Server.Controllers
             //return Ok(serviceProviders);
 
             if (!SetUserIdInService()) return new List<ServiceProviderInfoListItem>();
+
+            await _serviceProviderInfoService.SeedServiceProviderInfoAsync();
             var serviceProviders = await _serviceProviderInfoService.GetAllServiceProviderInfosAsync();
             return serviceProviders.ToList();
         }
