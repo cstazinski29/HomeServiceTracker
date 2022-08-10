@@ -41,6 +41,8 @@ namespace HomeServiceTracker.Server.Controllers
             //return Ok(serviceItems);
 
             if (!SetUserIdInService()) return new List<ServiceItemListItem>();
+
+            await _serviceItemService.SeedServiceItemsAsync();
             var serviceItems = await _serviceItemService.GetAllServiceItemsAsync();
             return serviceItems.ToList();
         }
