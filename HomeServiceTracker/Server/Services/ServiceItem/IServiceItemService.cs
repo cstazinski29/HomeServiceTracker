@@ -10,5 +10,6 @@ namespace HomeServiceTracker.Server.Services.ServiceItem
         Task<bool> UpdateServiceItemAsync(ServiceItemEdit model);
         Task<bool> DeleteServiceItemAsync(int serviceItemId);
         void SetUserId(Guid userId);
+        Task<bool> SeedServiceItemsAsync();
     }
 }

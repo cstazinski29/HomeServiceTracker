@@ -87,5 +87,42 @@ namespace HomeServiceTracker.Server.Services.ServiceItem
             return await _context.SaveChangesAsync() == 1;
         }
 
+        public async Task<bool> SeedServiceItemsAsync()
+        {
+            int count = _context.ServiceItems.Where(o => o.OwnerId == _userId).Count();
+            if (count == 0)
+            {
+                var firstService = new ServiceItemCreate()
+                {
+                    ServiceName = "Clean Gutters",
+                    ServiceDescription = "Clear leaves and other debris from the gutters",
+                    ServiceFrequency = "Yearly"
+                };
+
+                var secondService = new ServiceItemCreate()
+                {
+                    ServiceName = "Test Smoke Alarms",
+                    ServiceDescription = "Check to make sure smoke alarms are working & replace batteries as needed",
+                    ServiceFrequency = "Monthly"
+                };
+
+                var thirdService = new ServiceItemCreate()
+                {
+                    ServiceName = "Cut the Grass",
+                    ServiceDescription = "Cut and weedwack the grass",
+                    ServiceFrequency = "Weekly"
+                };
+
+                await CreateServiceItemAsync(firstService);
+                await CreateServiceItemAsync(secondService);
+                await CreateServiceItemAsync(thirdService);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }
