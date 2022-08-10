@@ -10,5 +10,6 @@ namespace HomeServiceTracker.Server.Services.ServiceProviderInfo
         Task<bool> UpdateServiceProviderInfoAsync(ServiceProviderInfoEdit model);
         Task<bool> DeleteServiceProviderInfoAsync(int serviceProviderInfoId);
         void SetUserId(Guid userId);
+        Task<bool> SeedServiceProviderInfoAsync();
     }
 }
