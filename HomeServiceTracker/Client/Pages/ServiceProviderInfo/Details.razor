@@ -21,7 +21,6 @@ else
                 <p class="card-text"><span class="fw-bold">Service Provider Name: </span>@ServiceProviderInfo.ServiceProviderName</p>
                 <p class="card-text"><span class="fw-bold">Number of Services: </span>@ServiceProviderInfo.NumberOfServices</p>
                 <p class="card-text"><span class="fw-bold">Average Rating: </span>@ServiceProviderInfo.AverageServiceProviderRating</p>
-                @*add more fields*@
             </div>
             <div class="card-footer text-muted d-flex justify-content-between">
                 <span class="text-left">Created: [insert created date]</span>
@@ -35,10 +34,7 @@ else
             <div class="text-center justify-content-between">
                 <a href=@($"serviceProviderInfo/edit/{serviceProviderInfoId}") class="btn btn-outline-secondary">Edit</a>
                 <a href="/serviceProviderInfo/index" class="btn btn-outline-primary">Back to Index</a>
-                @*<a href=@($"serviceProviderInfo/delete/{serviceProviderInfoId}") class="btn btn-outline-danger">Delete</a>*@
-
-                @*<hr />
-                <a href="/serviceProviderInfo/index">Back to Service Provider Index</a>*@
+                <hr />
             </div>
         </div>
     </div>

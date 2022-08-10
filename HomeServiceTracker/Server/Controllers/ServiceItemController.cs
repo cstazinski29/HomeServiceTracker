@@ -8,7 +8,6 @@ namespace HomeServiceTracker.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //public class ServiceItemController : ControllerBase
     public class ServiceItemController : Controller
     {
         private readonly IServiceItemService _serviceItemService;
@@ -37,10 +36,9 @@ namespace HomeServiceTracker.Server.Controllers
         [HttpGet]
         public async Task<List<ServiceItemListItem>> Index()
         {
-            //var serviceItems = await _serviceItemService.GetAllServiceItemsAsync();
-            //return Ok(serviceItems);
-
             if (!SetUserIdInService()) return new List<ServiceItemListItem>();
+
+            await _serviceItemService.SeedServiceItemsAsync();
             var serviceItems = await _serviceItemService.GetAllServiceItemsAsync();
             return serviceItems.ToList();
         }
@@ -70,9 +68,6 @@ namespace HomeServiceTracker.Server.Controllers
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> Edit(int id, ServiceItemEdit model)
         {
-            // I think I'll need to explore this permissioning further
-            // E.G. ADD A CHECK FOR WHETHER USER HAS PERMISSION TO EDIT (OWNERID == USERID)
-
             if (!SetUserIdInService()) return Unauthorized();
             if (model == null || !ModelState.IsValid) return BadRequest();
             if (model.Id != id) return BadRequest();
@@ -85,10 +80,6 @@ namespace HomeServiceTracker.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            // I think I'll need to explore this permissioning further
-            // E.G. ADD A CHECK FOR WHETHER USER HAS PERMISSION TO DELETE (OWNERID == USERID)
-                // there is a check for ownerid == userId in the GetServiceItemByIdAsync method in the service
-
             if (!SetUserIdInService()) return Unauthorized();
 
             var service = await _serviceItemService.GetServiceItemByIdAsync(id);

@@ -67,7 +67,6 @@ namespace HomeServiceTracker.Server.Services.ServiceItem
             if (model == null) return false;
             var entity = await _context.ServiceItems.FindAsync(model.Id);
 
-            // NEED TO ASSIGN A PERMISSION TO EDIT A SERVICE ITEM
             if (entity?.OwnerId != _userId) return false;
 
             entity.ServiceName = model.ServiceName;
@@ -80,11 +79,47 @@ namespace HomeServiceTracker.Server.Services.ServiceItem
         {
             var entity = await _context.ServiceItems.FindAsync(serviceItemId);
 
-            // NEED TO ASSIGN A PERMISSION TO DELETE A SERVICE ITEM
             if (entity?.OwnerId != _userId) return false;
 
             _context.ServiceItems.Remove(entity);
             return await _context.SaveChangesAsync() == 1;
+        }
+
+        public async Task<bool> SeedServiceItemsAsync()
+        {
+            int count = _context.ServiceItems.Where(o => o.OwnerId == _userId).Count();
+            if (count == 0)
+            {
+                var firstService = new ServiceItemCreate()
+                {
+                    ServiceName = "Clean Gutters",
+                    ServiceDescription = "Clear leaves and other debris from the gutters",
+                    ServiceFrequency = "Yearly"
+                };
+
+                var secondService = new ServiceItemCreate()
+                {
+                    ServiceName = "Test Smoke Alarms",
+                    ServiceDescription = "Check to make sure smoke alarms are working & replace batteries as needed",
+                    ServiceFrequency = "Monthly"
+                };
+
+                var thirdService = new ServiceItemCreate()
+                {
+                    ServiceName = "Cut the Grass",
+                    ServiceDescription = "Cut and weedwack the grass",
+                    ServiceFrequency = "Weekly"
+                };
+
+                await CreateServiceItemAsync(firstService);
+                await CreateServiceItemAsync(secondService);
+                await CreateServiceItemAsync(thirdService);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }

@@ -8,7 +8,6 @@ namespace HomeServiceTracker.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // public class HomeInfoController : ControllerBase
     public class HomeInfoController : Controller
     {
         private readonly IHomeInfoService _homeInfoService;
@@ -38,6 +37,8 @@ namespace HomeServiceTracker.Server.Controllers
         public async Task<List<HomeInfoListItem>> Index()
         {
             if (!SetUserIdInService()) return new List<HomeInfoListItem>();
+
+            await _homeInfoService.SeedHomeInfoAsync();
             var homeInfo = await _homeInfoService.GetAllHomeInfoAsync();
             return homeInfo.ToList();
         }

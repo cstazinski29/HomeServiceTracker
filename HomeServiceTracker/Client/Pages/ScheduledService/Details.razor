@@ -27,7 +27,6 @@ else
                 <p class="card-text"><span class="fw-bold">Service Provider Name: </span>@ScheduledService.ServiceProviderName</p>
                 <p class="card-text"><span class="fw-bold">Service Cost: </span>@ScheduledService.ServiceCost</p>
                 <p class="card-text"><span class="fw-bold">Service Rating: </span>@ScheduledService.ServiceRating</p>
-                @*add more fields*@
             </div>
             <div class="card-footer text-muted d-flex justify-content-between">
                 <span class="text-left">Created: [insert created date]</span>
@@ -41,10 +40,6 @@ else
             <div class="text-center justify-content-between">
                 <a href=@($"scheduledService/edit/{scheduledServiceId}") class="btn btn-outline-secondary">Edit</a>
                 <a href="/scheduledService/index" class="btn btn-outline-primary">Back to Index</a>
-                @*<a href=@($"scheduledService/delete/{scheduledServiceId}") class="btn btn-outline-danger">Delete</a>*@
-
-@*                <hr />
-                <a href="/scheduledService/index">Back to Service Item Index</a>*@
                 <hr />
             </div>
         </div>

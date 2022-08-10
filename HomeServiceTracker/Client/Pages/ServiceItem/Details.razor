@@ -5,7 +5,6 @@
 @page "/serviceItem/{serviceItemId:int}"
 
 <h3>Service Item</h3>
-@*<h3>@ServiceItem.ServiceName</h3>*@
 
 @if (ServiceItem == null)
 {
@@ -22,7 +21,6 @@ else
                 <p class="card-text"><span class="fw-bold">Service Name: </span>@ServiceItem.ServiceName</p>
                 <p class="card-text"><span class="fw-bold">Service Description: </span>@ServiceItem.ServiceDescription</p>
                 <p class="card-text"><span class="fw-bold">Service Frequency: </span>@ServiceItem.ServiceFrequency</p>
-                @*add more fields*@
             </div>
             <div class="card-footer text-muted d-flex justify-content-between">
                 <span class="text-left">Created: [insert created date]</span>
@@ -36,10 +34,6 @@ else
             <div class="text-center justify-content-between">
                 <a href=@($"serviceItem/edit/{serviceItemId}") class="btn btn-outline-secondary">Edit</a>
                 <a href="/serviceItem/index" class="btn btn-outline-primary">Back to Index</a>
-                @*<a href=@($"serviceItem/delete/{serviceItemId}") class="btn btn-outline-danger">Delete</a>*@
-
-                @*<hr />
-                <a href="/serviceItem/index">Back to Service Item Index</a>*@
                 <hr />
             </div>
         </div>
