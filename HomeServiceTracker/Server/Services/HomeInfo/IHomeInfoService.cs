@@ -11,5 +11,6 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
         Task<bool> DeleteHomeInfoAsync(int homeId);
         // userId was previously a string, I changed to guid as that was what marty had in his
         void SetUserId(Guid userId);
+        Task<bool> SeedHomeInfoAsync();
     }
 }

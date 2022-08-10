@@ -91,5 +91,48 @@ namespace HomeServiceTracker.Server.Services.HomeInfo
             _context.HomeInfo.Remove(entity);
             return await _context.SaveChangesAsync() == 1;
         }
+
+        public async Task<bool> SeedHomeInfoAsync()
+        {
+            int count = _context.HomeInfo.Where(h => h.OwnerId == _userId).Count();
+            if (count == 0)
+            {
+                var firstHome = new HomeInfoCreate()
+                {
+                    HomeName = "Home Stark",
+                    BuildYear = 1880,
+                    SquareFootage = 2700,
+                    Beds = 5,
+                    Baths = 2
+                };
+
+                var secondHome = new HomeInfoCreate()
+                {
+                    HomeName = "Home Lannister",
+                    BuildYear = 1910,
+                    SquareFootage = 2000,
+                    Beds = 3,
+                    Baths = 3
+                };
+
+                var thirdHome = new HomeInfoCreate()
+                {
+                    HomeName = "Home Targaryen",
+                    BuildYear = 2004,
+                    SquareFootage = 1700,
+                    Beds = 3,
+                    Baths = 2
+                };
+
+                await CreateHomeInfoAsync(firstHome);
+                await CreateHomeInfoAsync(secondHome);
+                await CreateHomeInfoAsync(thirdHome);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
